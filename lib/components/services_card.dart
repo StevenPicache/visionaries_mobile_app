@@ -13,7 +13,7 @@ class ServicesCard extends StatelessWidget {
 
 
   /*
-  *   This file is the every card on the listView
+  *   This file is will be the design of what is the li
   * */
 
   @override
@@ -33,7 +33,7 @@ class ServicesCard extends StatelessWidget {
             leading: Icon(Icons.home, size: 50,),
             title: Text(service.name),
             subtitle: Text("Heelloo"),
-            trailing: Icon(Icons.timer, size: 30,),
+            trailing: Icon(Icons.arrow_forward_ios, size: 30,),
 
           ),
 

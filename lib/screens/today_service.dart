@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 class TodayServices extends StatefulWidget {
   static final String routeName = '/today';
 
+
+
   @override
   _TodayServicesState createState() => _TodayServicesState();
 }
@@ -30,7 +32,6 @@ class _TodayServicesState extends State<TodayServices> {
 
   _downloadDogInfo() async {
     http.Client client = http.Client();
-
     try {
       String apiUrl = jobsApiUrl; // giving the URL for the job details request
 
@@ -40,6 +41,7 @@ class _TodayServicesState extends State<TodayServices> {
       // decoding all the JSON data into body.
       var body = jsonDecode(response.body);
 
+      // Initializing a class of Services
       List<Services> tempDogs = [];
 
       // Looping through all the returned JSON data
@@ -49,7 +51,8 @@ class _TodayServicesState extends State<TodayServices> {
       // the datas are now saved can be accessed from anywhere
 
       for (var dogJson in body) {
-        //print(dogJson['name']);
+        print(dogJson['id']);
+        print("hello world");
 
         String imageApiUrl =
             'https://api.thedogapi.com/v1/images/search?breed_id=${dogJson['id']}&include_breeds=false&limit=50';
@@ -65,17 +68,21 @@ class _TodayServicesState extends State<TodayServices> {
         // initializing all the data members of class Dogs
         // to the
         tempDogs.add(Services(
+          id: dogJson['id'],
           name: dogJson['name'],
           quote: dogJson['breed_group'],
           origin: dogJson['origin']
         ));
       }
 
+      // Updating the UI withh the information that is requested
       setState(() {
         myServices = tempDogs;
       });
 
     } finally {
+      print("Error happned on the connection to the UI");
+
       client.close();
     }
   }

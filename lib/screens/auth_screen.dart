@@ -1,3 +1,6 @@
+
+import 'dart:async';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +32,12 @@ class AuthenticationScreen extends StatefulWidget {
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance; // Using the firebase auth
-
-
+  User user;
   String email = '';
   String password = '';
+  int phoneNumber = 12312312;
 
+  Timer timer;
 
   @override
   Widget build(BuildContext context) {
@@ -47,86 +51,109 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         title: Text(widget.isLogin ? 'Login' : 'Register'),
       ),
 
-      body: ProgressHUD(
-        child: Builder(
-          builder: (context) => Padding(
-            padding: EdgeInsets.all(kLargeMargin),
-            child: Column(
-              children: <Widget>[
-                Flexible(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Image(image: AssetImage('images/logo.png')),
-                      ),
-                      SizedBox(width: kSmallMargin),
-                      Expanded(
-                        child: ScaleAnimatedTextKit(
-                          textAlign: TextAlign.center,
-                          text: ['Login', 'Sign-in'],
-                          textStyle: TextStyle(fontSize: 25, color: Colors.black),
+
+      body: Container(
+
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Theme.of(context).primaryColorDark, Theme.of(context).primaryColor]
+          ),
+        ),
+
+        child: ProgressHUD(
+          child: Builder(
+            builder: (context) => Padding(
+              padding: EdgeInsets.all(kLargeMargin),
+              child: Column(
+                children: <Widget>[
+                  Flexible(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Image(image: AssetImage('images/logo.png')),
                         ),
-                      )
-                    ],
+                        SizedBox(width: kSmallMargin),
+                        Expanded(
+                          child: ScaleAnimatedTextKit(
+                            textAlign: TextAlign.center,
+                            text: ['Login', 'Sign-in'],
+                            textStyle: TextStyle(fontSize: 25, color: Colors.black),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: kLargeMargin),
+                  SizedBox(height: kLargeMargin),
 
 
-                TextField(
-                  // THIS LINE OF CODE IS SAVING THE INPUT DATA TO THE EMAIL STRING
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                      hintText: 'Email', icon: Icon(Icons.alternate_email)),
-                ),
-                TextField(
-                  // THIS LINE OF CODE IS SAVING THE INPUT DATA TO THE EMAIL STRING
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  obscureText: true, // Hiding the input password
-                  decoration: InputDecoration(
-                      hintText: 'Password', icon: Icon(Icons.lock)),
-                ),
-
-
-                SizedBox(height: kLargeMargin),
-
-
-
-                FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  splashColor: Theme.of(context).accentColor,
-
-                  // widget.isLogin = means if the user pressses enter, then Flat button will be the login operation
-                  // widget.isLogin = register, register functionality will be executed
-                  child: Text(
-                    widget.isLogin ? 'LOGIN' : 'REGISTER',
-                    style: TextStyle(color: Colors.white),
+                  TextField(
+                    // THIS LINE OF CODE IS SAVING THE INPUT DATA TO THE EMAIL STRING
+                    onChanged: (value) {
+                      email = value;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                        hintText: 'Email', icon: Icon(Icons.alternate_email)),
                   ),
 
-                  // Handles the logic when the button is pressed
-                  onPressed: () async {
-                    final progress = ProgressHUD.of(context);
-                    progress.showWithText(widget.isLogin ? 'Loggin in' : 'Registering');
 
-                    Navigator.pushNamed(context, HomeScreen.routeName);
-//                    if(widget.isLogin){
-//                      await loginUser(context);
-//                    }
-//
-//                    else{
-//                      // Logic for the registration of the user
-//                      await registerUser(context);
-//                    }
+                  TextField(
+                    // THIS LINE OF CODE IS SAVING THE INPUT DATA TO THE EMAIL STRING
+                    onChanged: (value) {
+                      password = value;
+                    },
+                    obscureText: true, // Hiding the input password
+                    decoration: InputDecoration(
+                        hintText: 'Password', icon: Icon(Icons.lock)),
+                  ),
 
-                    progress.dismiss();
-                  },
-                )
-              ],
+
+                  SizedBox(height: kLargeMargin),
+
+
+
+                  FlatButton(
+                    color: Theme.of(context).primaryColorDark,
+                    splashColor: Theme.of(context).accentColor,
+
+                    // widget.isLogin = means if the user pressses enter, then Flat button will be the login operation
+                    // widget.isLogin = register, register functionality will be executed
+                    child: Text(
+                      widget.isLogin ? 'LOGIN' : 'REGISTER',
+                      style: TextStyle(color: Colors.white),
+                    ),
+
+
+                    // Handles the logic when the button is pressed
+                    onPressed: () async {
+                      final progress = ProgressHUD.of(context);
+                      progress.showWithText(widget.isLogin ? 'Loggin in' : 'Registering');
+
+                      bool isAuthSuccess;
+                      if(widget.isLogin){
+                        isAuthSuccess = await loginUser(context);
+                      }
+                      
+                      else{
+                        isAuthSuccess = await registerUser(context);
+
+                      }
+
+                      progress.dismiss();
+
+                      print("BEFORE AUTH SUCCESS");
+                      if(isAuthSuccess){
+                        Navigator.pushNamed(context, HomeScreen.routeName);
+                      }
+
+
+
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -139,30 +166,50 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
 
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("A verification email was send to your email account"),
+          content: Text("Please confirm and to proceed to the app."),
+        )
+    );
+  }
+
 
 
   /*
   *   This is the refractored logic of the loginUser feature
   *
   * */
-  Future <int> loginUser(BuildContext context) async {
+  Future <bool> loginUser(BuildContext context) async {
     try
     {
       // await will automatically create a background thread
-      // goes to the firebase and start fincding the user
+//      // goes to the firebase and start fincding the user
+      //await _auth.signInWithEmailAndPassword(email: email, password: password);
+
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       print("SUCCESS LOGIN");
       // If success, jump to group screen
-      Navigator.pushNamed(context, HomeScreen.routeName);
-      return 1;
+      //Navigator.pushNamed(context, HomeScreen.routeName);
+      return true;
     }
 
     catch (e){
       print(e); // for debugging purposes
       print("Failed logging in");
+
+
       AlertUtils.getErrorAlert(context, e.code).show(); // sends the user an alert message
-      return 0;
+      return false;
     }
   }
 
@@ -173,13 +220,31 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   *   Will basically use the firebase app and register a user
   * */
   Future <bool> registerUser(BuildContext context) async {
-    try {
+    try{
       await  _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+          email: email, password: password).then((user) => null);
+          print("Register Success");
 
-      print("Register Success");
-      return true;
-    }
+      // Sending an email verification to the given email.
+
+      if(user!= null){
+        user.sendEmailVerification();
+        //return true;
+      }
+
+      timer = Timer.periodic(Duration(seconds: 5), (timer) {
+              print("Before verify user");
+              verifyUser();
+          });
+
+
+      _showAlert(context);
+
+
+
+
+     }
+
 
     catch (e) {
       print(e);
@@ -190,4 +255,34 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
 
+
+
+  Future <bool> verifyUser() async {
+
+    try{
+      print("Verify user future ");
+      user = _auth.currentUser;
+      await user.reload();
+
+      if(user.emailVerified){
+        print("Success");
+
+
+        //timer.cancel();
+        //dispose();
+        //return true;
+        Navigator.pushNamed(context, HomeScreen.routeName);
+      }
+
+      else{
+        print("Not verified... Retrying");
+        user.sendEmailVerification();
+      }
+    }
+
+    catch (e) {
+      print(e);
+
+    }
+  }
 }

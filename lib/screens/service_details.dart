@@ -9,13 +9,20 @@ import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/services.dart';
 
 class DetailsScreen extends StatelessWidget {
+
+  final bool isDone = false;
+
   @override
+  // a references to the services object that contains all the information of the card
   final Services myServices;
 
+
   final String test1 =
-      "asdasdlkasjdlkasdasdasdasasdasdasdasdasdasdasdasdasdasdasdasdajsdklajskldjklajskldj,zmxcn,mnxm,zncALSDJKLASJDKLAJ,ZXMCN,AMSDWQIUJLKASJDZX,CMNASLDKJAKLSJZXC,MNASLKDJQIOWEJASDASDQWEASD";
+      "asDKJAKLSJZXC,MNASLKDJQIOWEJASDASDQWEASD";
+  //const DetailsScreen({this.myServices});
 
   const DetailsScreen({this.myServices});
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +36,12 @@ class DetailsScreen extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Theme.of(context).primaryColorDark,
-                Theme.of(context).primaryColor
+                Theme
+                    .of(context)
+                    .primaryColorDark,
+                Theme
+                    .of(context)
+                    .primaryColor
               ]),
         ),
 
@@ -38,9 +49,25 @@ class DetailsScreen extends StatelessWidget {
         child: SingleChildScrollView(
 
 
-
           child: Column(
             children: <Widget>[
+
+
+//              Row(
+//                mainAxisAlignment: MainAxisAlignment.center,
+//                children: [
+//                  Text(
+//                      isDone ? 'True' : 'False',
+//                    style: TextStyle(fontSize: 52),
+//                  ),
+//                ],
+//              ),
+//
+//              SizedBox(
+//                width: kSmallMargin,
+//              ),
+
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -52,13 +79,17 @@ class DetailsScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
                       ),
                     ),
                   ),
                   SizedBox(
                     width: kSmallMargin,
                   ),
+
+
                   Flexible(
                     child: Hero(
                       tag: 'logo',
@@ -80,13 +111,15 @@ class DetailsScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                    const EdgeInsets.symmetric(horizontal: kLargeMargin),
                     child: Text(
                       "Job Description: ",
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
                       ),
                     ),
                   )
@@ -110,14 +143,15 @@ class DetailsScreen extends StatelessWidget {
                         //"THIS IS WHERE",
                         style: TextStyle(
                             fontSize: 15,
-                            color: Theme.of(context).primaryColorDark),
+                            color: Theme
+                                .of(context)
+                                .primaryColorDark),
                       ),
                     ),
                   )
                 ],
 
               ),
-
 
 
               SizedBox(
@@ -129,13 +163,15 @@ class DetailsScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                    const EdgeInsets.symmetric(horizontal: kLargeMargin),
                     child: Text(
                       "Site Contact:",
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
                       ),
                     ),
                   )
@@ -155,17 +191,18 @@ class DetailsScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(kLargeMargin),
                       child: Text(
-                        test1,
+                        myServices.origin,
                         //"THIS IS WHERE",
                         style: TextStyle(
                             fontSize: 15,
-                            color: Theme.of(context).primaryColorDark),
+                            color: Theme
+                                .of(context)
+                                .primaryColorDark),
                       ),
                     ),
                   )
                 ],
               ),
-
 
 
               SizedBox(
@@ -190,13 +227,14 @@ class DetailsScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
                       ),
                     ),
                   )
                 ],
               ),
-
 
 
               Row(
@@ -210,7 +248,9 @@ class DetailsScreen extends StatelessWidget {
                         //"THIS IS WHERE",
                         style: TextStyle(
                             fontSize: 15,
-                            color: Theme.of(context).primaryColorDark),
+                            color: Theme
+                                .of(context)
+                                .primaryColorDark),
                       ),
                     ),
                   )
@@ -225,14 +265,22 @@ class DetailsScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(kLargeMargin),
                     child: FlatButton(
-                      color: Theme.of(context).primaryColor,
+                      color: Theme
+                          .of(context)
+                          .primaryColor,
                       child: Text(
                         "Finish",
                         style: TextStyle(color: Colors.black87),
                       ),
                       onPressed: () {
-                        print("HELLO WORLD");
+                        if (isDone == false) {
+                          myServices.setStatus(true);
+                          print(myServices.id);
+                          print("Hello elephant");
+                        }
                       },
+
+
                     ),
                   )
                 ],

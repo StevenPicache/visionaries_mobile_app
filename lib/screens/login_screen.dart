@@ -146,12 +146,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   // THIS LINE OF CODE WILL HANDLE THE PRESS FROM THE USER
                   // AND CHANGE SCREENS
+                  print("REGUSTER BUTTON");
                   Navigator.pushNamed(context, AuthenticationScreen.routeName, arguments: false);
                 },
               ),
-
-
-
 
 
             ],

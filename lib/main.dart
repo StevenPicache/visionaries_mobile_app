@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       //initialRoute: LoginScreen.routeName,
 
       // FOR DEBUGGING PURPOSES. I MADE TO TO START WITH THE HOME SCREEN INSTEAD OF LOGIN SCREEN
-      initialRoute: HomeScreen.routeName,
+      initialRoute: LoginScreen.routeName,
 
 
       onGenerateRoute: (RouteSettings settings) {
