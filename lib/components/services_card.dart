@@ -32,7 +32,7 @@ class ServicesCard extends StatelessWidget {
             // THIS WILL BE THE IMAGE OF THE BUILDING
             leading: Icon(Icons.home, size: 50,),
             title: Text(service.name),
-            subtitle: Text("Heelloo"),
+            subtitle: Text("Adreesss"),
             trailing: Icon(Icons.arrow_forward_ios, size: 30,),
 
           ),

@@ -18,7 +18,12 @@ class DetailsScreen extends StatelessWidget {
 
 
   final String test1 =
-      "asDKJAKLSJZXC,MNASLKDJQIOWEJASDASDQWEASD";
+      "asDKJAKLSJZXC,MNASLKDJQIOWEJASDASDQWEASDMNASLKDJQIOWEJASDASDQWEASD"
+      "MNASLKDJQIOWEJASDASDQWEASD"
+      "MNASLKDJQIOWEJASDASDQWEASD"
+      "MNASLKDJQIOWEJASDASDQWEASD"
+      "MNASLKDJQIOWEJASDASDQWEASD"
+      "";
   //const DetailsScreen({this.myServices});
 
   const DetailsScreen({this.myServices});
@@ -31,18 +36,24 @@ class DetailsScreen extends StatelessWidget {
 
       body: Container(
         height: 600,
+
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Theme
-                    .of(context)
-                    .primaryColorDark,
-                Theme
-                    .of(context)
-                    .primaryColor
-              ]),
+          color: Colors.grey
+//          gradient: LinearGradient(
+//              begin: Alignment.topCenter,
+//              end: Alignment.bottomCenter,
+//              colors: [
+//                Theme
+//                    .of(context)
+//                    .primaryColorDark,
+//
+//                Colors.grey,
+//                Colors.grey,
+//
+////                Theme
+////                    .of(context)
+////                    .primaryColor
+//              ]),
         ),
 
 
@@ -137,15 +148,30 @@ class DetailsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(kLargeMargin),
-                      child: Text(
-                        test1,
-                        //"THIS IS WHERE",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Theme
-                                .of(context)
-                                .primaryColorDark),
+                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+
+                      child: Container(
+
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white60,
+                          ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(40))
+
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            //test1,
+                            "THIS IS WHERE JOB DESCRIPTION FROM API WILL BE STORED",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark),
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -189,21 +215,36 @@ class DetailsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(kLargeMargin),
-                      child: Text(
-                        myServices.origin,
-                        //"THIS IS WHERE",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Theme
-                                .of(context)
-                                .primaryColorDark),
+                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+
+                      child: Container(
+
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white60,
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(40))
+
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            //test1,
+                            "THIS IS WHERE SITE DESCRIPTION FROM API WILL BE STORED",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark),
+                          ),
+                        ),
                       ),
                     ),
                   )
                 ],
-              ),
 
+              ),
 
               SizedBox(
                 width: kSmallMargin,
@@ -237,24 +278,45 @@ class DetailsScreen extends StatelessWidget {
               ),
 
 
+              SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(kLargeMargin),
-                      child: Text(
-                        test1,
-                        //"THIS IS WHERE",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Theme
-                                .of(context)
-                                .primaryColorDark),
+                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+
+                      child: Container(
+
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white60,
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(40))
+
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            //test1,
+                            "THIS IS WHERE THE NAME OF THE REQUESTED BY WILL SHOW UP",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark),
+                          ),
+                        ),
                       ),
                     ),
                   )
                 ],
+
               ),
 
 
@@ -273,6 +335,8 @@ class DetailsScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.black87),
                       ),
                       onPressed: () {
+
+
                         if (isDone == false) {
                           myServices.setStatus(true);
                           print(myServices.id);

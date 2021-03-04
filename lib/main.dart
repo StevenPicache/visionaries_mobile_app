@@ -8,8 +8,8 @@ import 'package:visionariesmobileapp/screens/login_screen.dart';
 import 'package:visionariesmobileapp/screens/today_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+//  WidgetsFlutterBinding.ensureInitialized();
+//  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
       //initialRoute: LoginScreen.routeName,
 
       // FOR DEBUGGING PURPOSES. I MADE TO TO START WITH THE HOME SCREEN INSTEAD OF LOGIN SCREEN
-      initialRoute: LoginScreen.routeName,
-
+      //initialRoute: LoginScreen.routeName,
+      initialRoute: HomeScreen.routeName,
 
       onGenerateRoute: (RouteSettings settings) {
         var routes = <String, WidgetBuilder>{
