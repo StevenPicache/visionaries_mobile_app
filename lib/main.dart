@@ -55,7 +55,6 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.white,
           primaryColorDark: Colors.black87,
           primaryColorLight: Colors.white,
-
           primaryTextTheme: TextTheme(bodyText1: TextStyle(color : Colors.black)),
           accentColor: Colors.lightGreenAccent),
 

@@ -25,73 +25,15 @@ class _TodayServicesState extends State<TodayServices> {
   @override
   void initState() {
     // Will execute the downloadInfo method
-
-    _downloadDogInfo();
-
-  }
-
-  _downloadDogInfo() async {
-    http.Client client = http.Client();
-    try {
-      String apiUrl = jobsApiUrl; // giving the URL for the job details request
-
-      // run a task on the background and request data from api
-      http.Response response = await client.get(apiUrl);
-
-      // decoding all the JSON data into body.
-      var body = jsonDecode(response.body);
-
-      // Initializing a class of Services
-      List<Services> tempDogs = [];
-
-      // Looping through all the returned JSON data
-      // saving each file to an Array list of Dogs class.
-      // When the initializing is done.
-
-      // the datas are now saved can be accessed from anywhere
-
-      for (var dogJson in body) {
-        print(dogJson['id']);
-        print("hello world");
-
-        String imageApiUrl =
-            'https://api.thedogapi.com/v1/images/search?breed_id=${dogJson['id']}&include_breeds=false&limit=50';
-        http.Response imageResponse = await client.get(imageApiUrl);
-        var imageBody = jsonDecode(imageResponse.body);
-
-        // THIS CODE IS TRYING TO DOWNLOAD ALL THE IMAGE THAT WE WEED
-        List<String> images = [];
-        for (var imageJson in imageBody) {
-          images.add(imageJson['url']);
-        }
-
-        // initializing all the data members of class Dogs
-        // to the
-        tempDogs.add(Services(
-          id: dogJson['id'],
-          name: dogJson['name'],
-          quote: dogJson['breed_group'],
-          origin: dogJson['origin']
-        ));
-      }
-
-      // Updating the UI withh the information that is requested
-      setState(() {
-        myServices = tempDogs;
-      });
-
-    } finally {
-      print("Error happned on the connection to the UI");
-
-      client.close();
-    }
+    //_downloadEmployeeServices();
+    getCategories();
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Today Services")),
+      appBar: AppBar(title: Text("Today Services", style: TextStyle(fontSize: 25, color: Colors.black87),)),
 
       /* The code up here will be the API request of all
       * the jobs for this specific day
@@ -102,12 +44,16 @@ class _TodayServicesState extends State<TodayServices> {
       body: Center(
 
         child: Container(
-
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Theme.of(context).primaryColorDark, Theme.of(context).primaryColor]
+                colors: [Theme
+                    .of(context)
+                    .primaryColorDark, Theme
+                    .of(context)
+                    .primaryColor
+                ]
             ),
           ),
 
@@ -120,10 +66,13 @@ class _TodayServicesState extends State<TodayServices> {
 
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kLargeMargin),
                       child: Text(
                         "Services for today",
-                        style: TextStyle(fontSize: 30.0, color: Theme.of(context).primaryColor),
+                        style: TextStyle(fontSize: 30.0, color: Theme
+                            .of(context)
+                            .primaryColor),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -133,17 +82,12 @@ class _TodayServicesState extends State<TodayServices> {
                     width: kLargeMargin,
                   ),
 
-
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kSmallMargin),
-                    child: Flexible(
-                      child: Hero(
-                        tag: 'logo',
-                        child: Image(
-                          height: 175,
-                          image: AssetImage('images/logo.png'),
-                        ),
+                  Flexible(
+                    child: Hero(
+                      tag: 'logo',
+                      child: Image(
+                        height: 175,
+                        image: AssetImage('images/logo.png'),
                       ),
                     ),
                   ),
@@ -151,7 +95,6 @@ class _TodayServicesState extends State<TodayServices> {
 
                 ],
               ),
-
 
               SizedBox(height: kSmallMargin, width: kSmallMargin,),
 
@@ -162,15 +105,14 @@ class _TodayServicesState extends State<TodayServices> {
                 width: 400,
 
                 child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return ServicesCard(
-                          service: myServices[index],
-                      );
-                    },
-                    itemCount: myServices.length,
+                  itemBuilder: (context, index) {
+
+                    return ServicesCard(
+                      service: myServices[index],
+                    );
+                  },
+                  itemCount: myServices.length,
                 ),
-
-
               ),
             ],
           ),
@@ -178,4 +120,95 @@ class _TodayServicesState extends State<TodayServices> {
       ),
     );
   }
+
+
+  getCategories() async {
+
+    try{
+      final response = await http.get("http://10.0.2.2:13000/workorders");
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+
+        List<Services> tempServices = [];
+        print(response.body);
+
+        for (var servicesJson in result){
+          tempServices.add(Services(
+              work_name: servicesJson[0],
+              site_address : servicesJson[1],
+              site_technician : servicesJson[2],
+              site_technician_contact_number: servicesJson[3],
+              order_creator: servicesJson[4],
+              job_description: servicesJson[5],
+          ));
+        }
+
+        print("SUCCESS");
+
+        setState(() {
+          myServices = tempServices;
+        });
+
+      } else {
+        print(response.statusCode);
+      }
+    }
+
+    catch (e){
+      print (e);
+    }
+  }
+
+//
+//  _downloadEmployeeServices() async {
+//    http.Client client = http.Client();
+//
+//    try {
+//      String apiUrl = jobsApiUrl; // giving the URL for the job details request
+//
+//      // run a task on the background and request data from api
+//      http.Response response = await client.get(apiUrl);
+//
+//      // decoding all the JSON data into body.
+//      var body = jsonDecode(response.body);
+//
+//      List<Services> tempDogs = [];
+//
+//      // Looping through all the returned JSON data
+//      // saving each file to an Array list of Dogs class.
+//      // When the initializing is done.
+//
+//      // the datas are now saved can be accessed from anywhere
+//
+//      for (var dogJson in body) {
+//        //print(dogJson['name']);
+//
+//        String imageApiUrl =
+//            'https://api.thedogapi.com/v1/images/search?breed_id=${dogJson['id']}&include_breeds=false&limit=50';
+//        http.Response imageResponse = await client.get(imageApiUrl);
+//        var imageBody = jsonDecode(imageResponse.body);
+//
+//        // THIS CODE IS TRYING TO DOWNLOAD ALL THE IMAGE THAT WE WEED
+//        List<String> images = [];
+//        for (var imageJson in imageBody) {
+//          images.add(imageJson['url']);
+//        }
+//
+//        // initializing all the data members of class Dogs
+//        // to the
+//        tempDogs.add(Services(
+//            name: dogJson['name'],
+//            quote: dogJson['breed_group'],
+//            origin: dogJson['origin']
+//        ));
+//      }
+//
+//      setState(() {
+//        myServices = tempDogs;
+//      });
+//    } finally {
+//      client.close();
+//    }
+//  }
 }

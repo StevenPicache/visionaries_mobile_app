@@ -11,6 +11,8 @@ import 'package:visionariesmobileapp/models/services.dart';
 class DetailsScreen extends StatelessWidget {
 
   final bool isDone = false;
+  final bool isBlank = false;
+
 
   @override
   // a references to the services object that contains all the information of the card
@@ -29,6 +31,8 @@ class DetailsScreen extends StatelessWidget {
   const DetailsScreen({this.myServices});
 
 
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Tasks")),
@@ -38,22 +42,22 @@ class DetailsScreen extends StatelessWidget {
         height: 600,
 
         decoration: BoxDecoration(
-          color: Colors.grey
-//          gradient: LinearGradient(
-//              begin: Alignment.topCenter,
-//              end: Alignment.bottomCenter,
-//              colors: [
+//          color: Colors.grey
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Theme
+                    .of(context)
+                    .primaryColorDark,
+
+                Colors.grey,
+                Colors.grey,
+
 //                Theme
 //                    .of(context)
-//                    .primaryColorDark,
-//
-//                Colors.grey,
-//                Colors.grey,
-//
-////                Theme
-////                    .of(context)
-////                    .primaryColor
-//              ]),
+//                    .primaryColor
+              ]),
         ),
 
 
@@ -64,28 +68,12 @@ class DetailsScreen extends StatelessWidget {
             children: <Widget>[
 
 
-//              Row(
-//                mainAxisAlignment: MainAxisAlignment.center,
-//                children: [
-//                  Text(
-//                      isDone ? 'True' : 'False',
-//                    style: TextStyle(fontSize: 52),
-//                  ),
-//                ],
-//              ),
-//
-//              SizedBox(
-//                width: kSmallMargin,
-//              ),
-
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Text(
-                      //test1,
-                      myServices.name,
+                      myServices.work_name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30.0,
@@ -96,6 +84,8 @@ class DetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
+
                   SizedBox(
                     width: kSmallMargin,
                   ),
@@ -163,7 +153,6 @@ class DetailsScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Text(
-                            //test1,
                             "THIS IS WHERE JOB DESCRIPTION FROM API WILL BE STORED",
                             style: TextStyle(
                                 fontSize: 15,
@@ -184,6 +173,9 @@ class DetailsScreen extends StatelessWidget {
                 width: kSmallMargin,
                 height: kSmallMargin,
               ),
+
+
+
 
               Row(
                 children: [
@@ -230,8 +222,8 @@ class DetailsScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Text(
-                            //test1,
-                            "THIS IS WHERE SITE DESCRIPTION FROM API WILL BE STORED",
+                            myServices.site_technician,
+                            //"THIS IS WHERE SITE DESCRIPTION FROM API WILL BE STORED",
                             style: TextStyle(
                                 fontSize: 15,
                                 color: Theme
@@ -243,8 +235,8 @@ class DetailsScreen extends StatelessWidget {
                     ),
                   )
                 ],
-
               ),
+
 
               SizedBox(
                 width: kSmallMargin,
@@ -259,70 +251,8 @@ class DetailsScreen extends StatelessWidget {
               // Button logout
 
               Row(
-                children: [
-                  Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: kLargeMargin),
-                    child: Text(
-                      "Requested by: ",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
-                        color: Theme
-                            .of(context)
-                            .primaryColorLight,
-                      ),
-                    ),
-                  )
-                ],
-              ),
 
-
-              SizedBox(
-                width: kSmallMargin,
-                height: kSmallMargin,
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
-
-                      child: Container(
-
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white60,
-                            ),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(40))
-
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Text(
-                            //test1,
-                            "THIS IS WHERE THE NAME OF THE REQUESTED BY WILL SHOW UP",
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColorDark),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-
-              ),
-
-
-              Row(
-
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(kLargeMargin),
@@ -335,16 +265,7 @@ class DetailsScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.black87),
                       ),
                       onPressed: () {
-
-
-                        if (isDone == false) {
-                          myServices.setStatus(true);
-                          print(myServices.id);
-                          print("Hello elephant");
-                        }
                       },
-
-
                     ),
                   )
                 ],

@@ -31,8 +31,8 @@ class ServicesCard extends StatelessWidget {
           child: ListTile(
             // THIS WILL BE THE IMAGE OF THE BUILDING
             leading: Icon(Icons.home, size: 50,),
-            title: Text(service.name),
-            subtitle: Text("Adreesss"),
+            title: Text(service.work_name, style: TextStyle(fontWeight: FontWeight.bold),),
+            subtitle: Text(service.site_address),
             trailing: Icon(Icons.arrow_forward_ios, size: 30,),
 
           ),

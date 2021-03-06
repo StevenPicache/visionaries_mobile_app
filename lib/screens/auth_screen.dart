@@ -159,13 +159,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
     try{
       // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
-      String myApiUrl = "http://10.0.2.2:13000/";
+      //String myApiUrl = "http://10.0.2.2:13000/";
 
-      print("asdasdasdasdasdasdasds");
-      print(username);
-      print(password);
+      String myApiUrl = EMULATOR_API_URL + PORT_NUMBER;
 
-      var response = await http.post(myApiUrl + 'auth' ,headers: <String, String>{
+      var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       }, body: jsonEncode(data));
 
