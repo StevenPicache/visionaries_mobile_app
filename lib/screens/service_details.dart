@@ -32,7 +32,6 @@ class DetailsScreen extends StatelessWidget {
 
 
 
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Tasks")),
@@ -175,8 +174,6 @@ class DetailsScreen extends StatelessWidget {
               ),
 
 
-
-
               Row(
                 children: [
                   Padding(
@@ -244,6 +241,131 @@ class DetailsScreen extends StatelessWidget {
               ),
 
 
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                    child: Text(
+                      "Date Requested:",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+              SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
+
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+
+                      child: Container(
+
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white60,
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(40))
+
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            myServices.date_requested,
+                            //"THIS IS WHERE SITE DESCRIPTION FROM API WILL BE STORED",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+
+
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                    child: Text(
+                      "Scheduled For:",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+              SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
+
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+
+                      child: Container(
+
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white60,
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(40))
+
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            myServices.date_scheduled,
+                            //"THIS IS WHERE SITE DESCRIPTION FROM API WILL BE STORED",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+
+
+
               SizedBox(
                 width: kSmallMargin,
                 height: kSmallMargin,
@@ -276,4 +398,5 @@ class DetailsScreen extends StatelessWidget {
       ),
     );
   }
+
 }

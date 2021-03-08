@@ -22,6 +22,7 @@ class _TodayServicesState extends State<TodayServices> {
   List<Services> myServices = [];
 
 
+
   @override
   void initState() {
     // Will execute the downloadInfo method
@@ -124,33 +125,46 @@ class _TodayServicesState extends State<TodayServices> {
 
   getCategories() async {
 
-    try{
-      final response = await http.get("http://10.0.2.2:13000/workorders");
+    try {
+      final response = await http.get("http://10.0.2.2:5000/workorders");
+      final int counter = 0;
 
       if (response.statusCode == 200) {
         final result = json.decode(response.body);
 
-        List<Services> tempServices = [];
+
         print(response.body);
 
-        for (var servicesJson in result){
-          tempServices.add(Services(
-              work_name: servicesJson[0],
-              site_address : servicesJson[1],
-              site_technician : servicesJson[2],
-              site_technician_contact_number: servicesJson[3],
-              order_creator: servicesJson[4],
-              job_description: servicesJson[5],
-          ));
+
+        List<Services> tempServices = [];
+        Map<String, dynamic> map =  result;
+        int i = 0;
+        int dataLength = map['workOrders'].length;
+
+        while(i < dataLength){
+          tempServices.add(
+              Services(
+                  work_name: map['workOrders'][i]['Title'],
+                  site_address: map['workOrders'][i]['Address'],
+                  site_technician: map['workOrders'][i]['Contact_Name'],
+                  site_technician_contact_number: map['workOrders'][i]['Contact_Cell'],
+                  date_requested: map['workOrders'][i]['Date_Requested'],
+                  order_creator: map['workOrders'][i]['Requested_By'],
+                  job_description: map['workOrders'][i]['Scope_of_Work'],
+                  date_scheduled: map['workOrders'][i]['Sceduled_For']
+                )
+            );
+          print(i);
+          i += 1;
+        };
+
+          print("SUCCESS");
+
+          setState(() {
+            myServices = tempServices;
+          });
         }
-
-        print("SUCCESS");
-
-        setState(() {
-          myServices = tempServices;
-        });
-
-      } else {
+      else {
         print(response.statusCode);
       }
     }
@@ -160,55 +174,8 @@ class _TodayServicesState extends State<TodayServices> {
     }
   }
 
-//
-//  _downloadEmployeeServices() async {
-//    http.Client client = http.Client();
-//
-//    try {
-//      String apiUrl = jobsApiUrl; // giving the URL for the job details request
-//
-//      // run a task on the background and request data from api
-//      http.Response response = await client.get(apiUrl);
-//
-//      // decoding all the JSON data into body.
-//      var body = jsonDecode(response.body);
-//
-//      List<Services> tempDogs = [];
-//
-//      // Looping through all the returned JSON data
-//      // saving each file to an Array list of Dogs class.
-//      // When the initializing is done.
-//
-//      // the datas are now saved can be accessed from anywhere
-//
-//      for (var dogJson in body) {
-//        //print(dogJson['name']);
-//
-//        String imageApiUrl =
-//            'https://api.thedogapi.com/v1/images/search?breed_id=${dogJson['id']}&include_breeds=false&limit=50';
-//        http.Response imageResponse = await client.get(imageApiUrl);
-//        var imageBody = jsonDecode(imageResponse.body);
-//
-//        // THIS CODE IS TRYING TO DOWNLOAD ALL THE IMAGE THAT WE WEED
-//        List<String> images = [];
-//        for (var imageJson in imageBody) {
-//          images.add(imageJson['url']);
-//        }
-//
-//        // initializing all the data members of class Dogs
-//        // to the
-//        tempDogs.add(Services(
-//            name: dogJson['name'],
-//            quote: dogJson['breed_group'],
-//            origin: dogJson['origin']
-//        ));
-//      }
-//
-//      setState(() {
-//        myServices = tempDogs;
-//      });
-//    } finally {
-//      client.close();
-//    }
-//  }
+
+
+
+
 }
