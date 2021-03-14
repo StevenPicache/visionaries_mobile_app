@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
 
                Container(
-                 height: kScreenHeight,
+                 //height: MediaQuery.of(context).size.height,
 
                  decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -151,7 +151,6 @@ class _HomeScreenState extends State<HomeScreen> {
                )
               ]
           ),
-
       ),
 
 

@@ -9,11 +9,6 @@ import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/services.dart';
 
 class DetailsScreen extends StatelessWidget {
-
-  final bool isDone = false;
-  final bool isBlank = false;
-
-
   @override
   // a references to the services object that contains all the information of the card
   final Services myServices;
@@ -26,11 +21,8 @@ class DetailsScreen extends StatelessWidget {
       "MNASLKDJQIOWEJASDASDQWEASD"
       "MNASLKDJQIOWEJASDASDQWEASD"
       "";
-  //const DetailsScreen({this.myServices});
 
   const DetailsScreen({this.myServices});
-
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +30,7 @@ class DetailsScreen extends StatelessWidget {
 
 
       body: Container(
-        height: 600,
+//        height: 600,
 
         decoration: BoxDecoration(
 //          color: Colors.grey
@@ -152,7 +144,8 @@ class DetailsScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Text(
-                            "THIS IS WHERE JOB DESCRIPTION FROM API WILL BE STORED",
+                            //"THIS IS WHERE JOB DESCRIPTION FROM API WILL BE STORED",
+                            myServices.job_description,
                             style: TextStyle(
                                 fontSize: 15,
                                 color: Theme
@@ -164,7 +157,6 @@ class DetailsScreen extends StatelessWidget {
                     ),
                   )
                 ],
-
               ),
 
 
@@ -363,9 +355,6 @@ class DetailsScreen extends StatelessWidget {
                 ],
               ),
 
-
-
-
               SizedBox(
                 width: kSmallMargin,
                 height: kSmallMargin,
@@ -373,7 +362,6 @@ class DetailsScreen extends StatelessWidget {
               // Button logout
 
               Row(
-
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
@@ -387,6 +375,9 @@ class DetailsScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.black87),
                       ),
                       onPressed: () {
+
+                          print(get_finish_time());
+
                       },
                     ),
                   )
@@ -399,4 +390,16 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 
+  String get_finish_time(){
+
+    var now = DateTime.now();
+    String retVal = now.year.toString() +'-'
+                  + now.month.toString() + '-'
+                  + now.day.toString() +' '
+                  + now.hour.toString() + ':'
+                  + now.minute.toString() + ':'
+                  + now.second.toString().padLeft(2,'0');
+
+    return retVal;
+  }
 }

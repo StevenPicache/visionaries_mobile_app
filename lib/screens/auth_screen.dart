@@ -159,8 +159,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
     try{
       // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
-      //String myApiUrl = "http://10.0.2.2:13000/";
-
       String myApiUrl = EMULATOR_API_URL + PORT_NUMBER;
 
       var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,headers: <String, String>{
@@ -186,6 +184,15 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   (Route<dynamic> route) => false);
         }
       }
+
+      else if (response.statusCode == 401){
+        if(response.reasonPhrase == 'UNAUTHORIZED'){
+            AlertUtils.getErrorAlert(context, "ERROR_USER_NOT_FOUND").show();
+        }
+
+      }
+
+
       else {
         setState(() {
           _isLoading = false;
@@ -216,8 +223,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       // Handles the logic when the button is pressed
       onPressed: (){
 
-        if (emailController.text == "" || passwordController.text == ""){
+        if (emailController.text == "" && passwordController.text == ""){
             print("Hello world");
+            AlertUtils.getErrorAlert(context, "ERROR_INVALID_EMAIL_AND_PASSWORD").show();
+        }
+
+        else if(emailController.text == "" && passwordController.text != ""){
+            AlertUtils.getErrorAlert(context, "ERROR_INVALID_EMAIL").show();
+        }
+
+
+        else if(emailController.text != "" && passwordController.text == ""){
+          AlertUtils.getErrorAlert(context, "ERROR_INVALID_PASSWORD").show();
         }
 
         else{

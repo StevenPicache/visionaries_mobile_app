@@ -10,6 +10,14 @@ class AlertUtils{
 
     switch (errorCode) {
 
+      case "ERROR_INVALID_EMAIL_AND_PASSWORD":
+        title = 'Invalid email and password';
+        desc = 'Check your email and password try again';
+        break;
+      case "ERROR_INVALID_PASSWORD":
+        title = 'Incorrect password';
+        desc = 'Check your password and try again';
+        break;
 
       case "ERROR_INVALID_EMAIL":
         title = 'Invalid email';
@@ -19,6 +27,7 @@ class AlertUtils{
         title = 'Incorrect password';
         desc = 'Check your password and try again';
         break;
+
       case "ERROR_USER_NOT_FOUND":
         title = 'User not found';
         desc = 'Maybe you haven\'t previously registered an account?';
@@ -38,7 +47,7 @@ class AlertUtils{
         break;
 
       default:
-        title = errorCode;
+        title = "ASDASDKLASJDKLJASKLDJLKASD";
         break;
     }
 

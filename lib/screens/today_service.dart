@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:visionariesmobileapp/components/services_card.dart';
@@ -8,6 +9,7 @@ import 'package:visionariesmobileapp/models/services.dart';
 
 
 import 'package:http/http.dart' as http;
+import 'package:visionariesmobileapp/utils/alert_utils.dart';
 
 class TodayServices extends StatefulWidget {
   static final String routeName = '/today';
@@ -20,13 +22,15 @@ class TodayServices extends StatefulWidget {
 
 class _TodayServicesState extends State<TodayServices> {
   List<Services> myServices = [];
+  MediaQueryData queryData;
 
+
+  AlertUtils showAlert;
 
 
   @override
   void initState() {
     // Will execute the downloadInfo method
-    //_downloadEmployeeServices();
     getCategories();
   }
 
@@ -58,17 +62,14 @@ class _TodayServicesState extends State<TodayServices> {
             ),
           ),
 
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+          child: Expanded(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
 
-
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kLargeMargin),
+                    Expanded(
                       child: Text(
                         "Services for today",
                         style: TextStyle(fontSize: 30.0, color: Theme
@@ -77,45 +78,42 @@ class _TodayServicesState extends State<TodayServices> {
                         textAlign: TextAlign.left,
                       ),
                     ),
-                  ),
 
-                  SizedBox(
-                    width: kLargeMargin,
-                  ),
+                    SizedBox(
+                      width: kLargeMargin,
+                    ),
 
-                  Flexible(
-                    child: Hero(
-                      tag: 'logo',
-                      child: Image(
-                        height: 175,
-                        image: AssetImage('images/logo.png'),
+                    Flexible(
+                      child: Hero(
+                        tag: 'logo',
+                        child: Image(
+                          height: 175,
+                          image: AssetImage('images/logo.png'),
+                        ),
                       ),
                     ),
-                  ),
-
-
-                ],
-              ),
-
-              SizedBox(height: kSmallMargin, width: kSmallMargin,),
-
-
-              Container(
-
-                height: 375,
-                width: 400,
-
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-
-                    return ServicesCard(
-                      service: myServices[index],
-                    );
-                  },
-                  itemCount: myServices.length,
+                  ],
                 ),
-              ),
-            ],
+
+                SizedBox(height: kSmallMargin, width: kSmallMargin,),
+
+                Container(
+                  height: MediaQuery.of(context).size.height * .55,
+                  width: MediaQuery.of(context).size.width * .95,
+
+                  // creating height dynamically
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+
+                      return ServicesCard(
+                        service: myServices[index],
+                      );
+                    },
+                    itemCount: myServices.length,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -124,18 +122,11 @@ class _TodayServicesState extends State<TodayServices> {
 
 
   getCategories() async {
-
     try {
       final response = await http.get("http://10.0.2.2:5000/workorders");
-      final int counter = 0;
-
       if (response.statusCode == 200) {
         final result = json.decode(response.body);
-
-
-        print(response.body);
-
-
+        //print(response.body);
         List<Services> tempServices = [];
         Map<String, dynamic> map =  result;
         int i = 0;
@@ -144,17 +135,16 @@ class _TodayServicesState extends State<TodayServices> {
         while(i < dataLength){
           tempServices.add(
               Services(
-                  work_name: map['workOrders'][i]['Title'],
-                  site_address: map['workOrders'][i]['Address'],
-                  site_technician: map['workOrders'][i]['Contact_Name'],
-                  site_technician_contact_number: map['workOrders'][i]['Contact_Cell'],
-                  date_requested: map['workOrders'][i]['Date_Requested'],
-                  order_creator: map['workOrders'][i]['Requested_By'],
-                  job_description: map['workOrders'][i]['Scope_of_Work'],
-                  date_scheduled: map['workOrders'][i]['Sceduled_For']
+                  work_name: map['workOrders'][i]['Title'] ?? 'No data was received from server',
+                  site_address: map['workOrders'][i]['Address'] ?? 'No data was received from server',
+                  site_technician: map['workOrders'][i]['Contact_Name'] ?? 'No data was received from server',
+                  site_technician_contact_number: map['workOrders'][i]['Contact_Cell'] ?? 'No data was received from server',
+                  date_requested: map['workOrders'][i]['Date_Requested'] ?? 'No data was received from server',
+                  order_creator: map['workOrders'][i]['Requested_By'] ?? 'No data was received from server',
+                  job_description: map['workOrders'][i]['Scope_of_Work'] ?? 'No data was received ',
+                  date_scheduled: map['workOrders'][i]['Sceduled_For'] ?? 'No data was received from server'
                 )
             );
-          print(i);
           i += 1;
         };
 
