@@ -26,7 +26,6 @@ class ServicesCard extends StatelessWidget {
         height: 75,
         width: 50,
 
-
         child: Card(
           child: ListTile(
             // THIS WILL BE THE IMAGE OF THE BUILDING
@@ -36,8 +35,6 @@ class ServicesCard extends StatelessWidget {
             trailing: Icon(Icons.arrow_forward_ios, size: 30,),
 
           ),
-
-
         ),
       ),
 

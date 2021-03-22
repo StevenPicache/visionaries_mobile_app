@@ -30,8 +30,6 @@ class DetailsScreen extends StatelessWidget {
 
 
       body: Container(
-//        height: 600,
-
         decoration: BoxDecoration(
 //          color: Colors.grey
           gradient: LinearGradient(
@@ -165,6 +163,70 @@ class DetailsScreen extends StatelessWidget {
                 height: kSmallMargin,
               ),
 
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                    child: Text(
+                      "Site Address: ",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+              SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
+
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+
+                      child: Container(
+
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white60,
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(40))
+
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            //"THIS IS WHERE JOB DESCRIPTION FROM API WILL BE STORED",
+                            myServices.site_address,
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+              SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
 
               Row(
                 children: [
@@ -193,6 +255,7 @@ class DetailsScreen extends StatelessWidget {
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+
                 children: [
                   Expanded(
                     child: Padding(

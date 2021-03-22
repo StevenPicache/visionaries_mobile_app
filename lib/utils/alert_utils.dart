@@ -15,7 +15,7 @@ class AlertUtils{
         desc = 'Check your email and password try again';
         break;
       case "ERROR_INVALID_PASSWORD":
-        title = 'Incorrect password';
+        title = 'Invalid password';
         desc = 'Check your password and try again';
         break;
 

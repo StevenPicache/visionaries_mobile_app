@@ -1,7 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:visionariesmobileapp/constants.dart';
-import 'package:visionariesmobileapp/screens/auth_screen.dart';
+import 'package:visionariesmobileapp/helpers/auth_screen.dart';
+
 
 
 
@@ -132,9 +133,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.pushNamed(context, AuthenticationScreen.routeName, arguments: true);
                 },
               ),
-
-
-
             ],
           ),
         ),

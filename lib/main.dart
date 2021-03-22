@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:visionariesmobileapp/screens/auth_screen.dart';
+import 'file:///C:/Users/picac/Desktop/Flutter%20Application/visionaries_mobile_app/lib/helpers/auth_screen.dart';
 import 'package:visionariesmobileapp/screens/find_site_location.dart';
 import 'package:visionariesmobileapp/screens/home_screen.dart';
 import 'package:visionariesmobileapp/screens/login_screen.dart';
