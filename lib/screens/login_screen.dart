@@ -7,7 +7,7 @@ import 'package:visionariesmobileapp/helpers/auth_screen.dart';
 
 
 class LoginScreen extends StatefulWidget {
-  static final String routeName = '/';
+  static final String routeName = '/login';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

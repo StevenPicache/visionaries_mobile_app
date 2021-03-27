@@ -14,6 +14,12 @@ class AlertUtils{
         title = 'Invalid email and password';
         desc = 'Check your email and password try again';
         break;
+
+      case "ERROR_INVALID_QUANTITY":
+        title = 'Invalid email and password';
+        desc = 'Please enter a quantity of items to move';
+        break;
+
       case "ERROR_INVALID_PASSWORD":
         title = 'Invalid password';
         desc = 'Check your password and try again';

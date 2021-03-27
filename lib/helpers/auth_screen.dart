@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:visionariesmobileapp/constants.dart';
@@ -29,9 +28,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
   bool _isLoading = false;
 
-
-  //final FirebaseAuth _auth = FirebaseAuth.instance; // Using the firebase auth
-  User user;
   String username = '';
   String password = '';
 
@@ -161,12 +157,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
       String myApiUrl = EMULATOR_API_URL + PORT_NUMBER;
 
-      var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,headers: <String, String>{
+      var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
+          headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       }, body: jsonEncode(data));
 
       print(response.statusCode);
-
 
       if(response.statusCode == 200) {
         jsonResponse = json.decode(response.body);
@@ -189,9 +185,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         if(response.reasonPhrase == 'UNAUTHORIZED'){
             AlertUtils.getErrorAlert(context, "ERROR_USER_NOT_FOUND").show();
         }
-
       }
-
 
       else {
         setState(() {
@@ -232,7 +226,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             AlertUtils.getErrorAlert(context, "ERROR_INVALID_EMAIL").show();
         }
 
-
         else if(emailController.text != "" && passwordController.text == ""){
           AlertUtils.getErrorAlert(context, "ERROR_INVALID_PASSWORD").show();
         }
@@ -247,4 +240,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       },
     );
   }
+
+
+
 }

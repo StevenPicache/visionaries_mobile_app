@@ -16,13 +16,6 @@ class DetailsScreen extends StatelessWidget {
   const DetailsScreen({this.serviceDetails});
 
 
-  final String test1 =
-      "asDKJAKLSJZXC,MNASLKDJQIOWEJASDASDQWEASDMNASLKDJQIOWEJASDASDQWEASD"
-      "MNASLKDJQIOWEJASDASDQWEASD"
-      "MNASLKDJQIOWEJASDASDQWEASD"
-      "MNASLKDJQIOWEJASDASDQWEASD"
-      "MNASLKDJQIOWEJASDASDQWEASD"
-      "";
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Tasks")),
@@ -88,6 +81,8 @@ class DetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
+
                 ],
               ),
 
@@ -263,6 +258,7 @@ class DetailsScreen extends StatelessWidget {
 
                       Expanded(
                         child: Text(
+
                           serviceDetails.date_scheduled,
                           style: TextStyle(
                             fontSize: 20.0,
@@ -389,7 +385,6 @@ class DetailsScreen extends StatelessWidget {
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(kLargeMargin),
@@ -400,12 +395,6 @@ class DetailsScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-
-                          //print(get_finish_time());
-//
-//                        Navigator.push(context,
-//                            MaterialPageRoute(builder: (context) => FinishJob(finishService: serviceDetails,)))
-
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => FinishJob(finishService: serviceDetails,)));
 

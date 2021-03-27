@@ -14,8 +14,18 @@ class Services{
   String date_scheduled;
 
 
-  Services({this.work_name, this.site_address, this.site_technician,
-    this.site_technician_contact_number, this.date_requested, this.order_creator,
-    this.job_description, this.date_scheduled});
-
+  // Constructor
+  Services
+      (
+        {
+          this.work_name,
+          this.site_address,
+          this.site_technician,
+          this.site_technician_contact_number,
+          this.date_requested,
+          this.order_creator,
+          this.job_description,
+          this.date_scheduled
+        }
+      );
 }

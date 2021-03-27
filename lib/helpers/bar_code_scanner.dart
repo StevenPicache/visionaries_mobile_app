@@ -8,15 +8,7 @@ import 'package:flutter/services.dart';
 class BarCodeScanner
 {
 
-
-//  Services({this.work_name, this.site_address, this.site_technician,
-//    this.site_technician_contact_number, this.date_requested, this.order_creator,
-//    this.job_description, this.date_scheduled});
-
-
-
   BarCodeScanner();
-
 
   Future scan() async{
     String barcode = "";
@@ -45,4 +37,5 @@ class BarCodeScanner
 
     return barcode;
   }
+
 }
