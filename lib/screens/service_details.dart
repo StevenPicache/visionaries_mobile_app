@@ -92,8 +92,6 @@ class DetailsScreen extends StatelessWidget {
               ),
 
 
-
-
               // SITE CONTACT
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
@@ -148,7 +146,6 @@ class DetailsScreen extends StatelessWidget {
 
               // SITE CONTACT
               Container(
-
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
                   child: Row(
@@ -252,13 +249,14 @@ class DetailsScreen extends StatelessWidget {
                         ),
                       ),
 
+
                       const SizedBox(
                         width: 15.0,
                       ),
 
+
                       Expanded(
                         child: Text(
-
                           serviceDetails.date_scheduled,
                           style: TextStyle(
                             fontSize: 20.0,
@@ -278,8 +276,6 @@ class DetailsScreen extends StatelessWidget {
                 width: kSmallMargin,
                 height: kSmallMargin,
               ),
-
-
 
               Container(
                 child: Padding(
@@ -397,8 +393,6 @@ class DetailsScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) => FinishJob(finishService: serviceDetails,)));
-
-
                       },
                     ),
                   )
@@ -410,6 +404,16 @@ class DetailsScreen extends StatelessWidget {
       ),
     );
   }
+
+  String Format_Schedule_Date(myDate){
+
+    int strLength = myDate.length;
+    String myStr = myDate.removeAt(0);
+    myStr = myDate.removeAt(strLength -1 );
+    print(myStr);
+  }
+
+
 
   String get_finish_time(){
 

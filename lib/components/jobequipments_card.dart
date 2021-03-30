@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:visionariesmobileapp/models/Items.dart';
+import 'package:visionariesmobileapp/models/JobEquipment.dart';
 
-class ItemCard extends StatelessWidget {
+class JobEquipmentCard extends StatelessWidget {
 
   static final String routeName = '/items';
 
-  final Items item;
-  const ItemCard({this.item});
+  final JobEquipment jobEquipment;
+  const JobEquipmentCard({this.jobEquipment});
 
 
 
@@ -18,20 +19,20 @@ class ItemCard extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.1,
       width: 100,
 
+
       child: Card(
         child: ListTile(
-          // THIS WILL BE THE IMAGE OF THE BUILDING
-          title: Text(item.item_name,
+          // activeColor: Colors.pink[300],
+          // dense: true,
+          title: Text(
+            jobEquipment.job_equipment_name,
             style: TextStyle(
                 fontWeight: FontWeight.bold
             ),
           ),
-          subtitle: Text(item.item_location),
-          trailing: Text(item.item_quantity),
+          trailing: Text(jobEquipment.job_equipment_id, style: TextStyle(fontSize: 20),),
         ),
       ),
     );
   }
-
-
 }

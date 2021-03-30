@@ -172,7 +172,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           });
 
           sharedPreferences.setString("token", jsonResponse['access_token']);
+          sharedPreferences.setString("userid", jsonResponse['user_id'].toString());
+
           print(jsonResponse['access_token']);
+          print(jsonResponse['user_id']);
           print(sharedPreferences.getString("token"));
 
           Navigator.of(context).pushAndRemoveUntil(

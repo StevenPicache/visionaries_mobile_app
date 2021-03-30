@@ -103,6 +103,7 @@ class _TodayServicesState extends State<TodayServices> {
                         );
                       },
                       itemCount: myServices.length,
+
                     ),
                   ),
                 ),
@@ -120,8 +121,7 @@ class _TodayServicesState extends State<TodayServices> {
   getCategories() async {
     try {
       String urlAndroid = "http://10.0.2.2:5000/workorders";
-      String urlIOS = "http://127.0.0.1:5000/workorders";
-      final response = await http.get(urlIOS);
+      final response = await http.get(urlAndroid);
       parseData(response);
 
     } catch (e) {
@@ -145,15 +145,18 @@ class _TodayServicesState extends State<TodayServices> {
       int dataLength = map['workOrders'].length;
 
       while (i < dataLength) {
-        tempServices.add(Services(
+
+        try{
+
+          tempServices.add(Services(
+
             work_name: map['workOrders'][i]['Title'] ??
                 'No data was received from server',
             site_address: map['workOrders'][i]['Address'] ??
                 'No data was received from server',
             site_technician: map['workOrders'][i]['Contact_Name'] ??
                 'No data was received from server',
-            site_technician_contact_number: map['workOrders'][i]
-            ['Contact_Cell'] ??
+            site_technician_contact_number: map['workOrders'][i]['Contact_Cell'] ??
                 'No data was received from server',
             date_requested: map['workOrders'][i]['Date_Requested'] ??
                 'No data was received from server',
@@ -162,8 +165,16 @@ class _TodayServicesState extends State<TodayServices> {
             job_description: map['workOrders'][i]['Scope_of_Work'] ??
                 'No data was received ',
             date_scheduled: map['workOrders'][i]['Sceduled_For'] ??
-                'No data was received from server'));
-        i += 1;
+                'No data was received from server',
+            work_id: map['workOrders'][i]['Job_ID'].toString() ??
+                'No data was received from server',));
+          i += 1;
+        }
+
+        catch (e){
+          print(e);
+        }
+
       };
 
       setState(() {
@@ -173,6 +184,4 @@ class _TodayServicesState extends State<TodayServices> {
       print(response.statusCode);
     }
   }
-
-
 }

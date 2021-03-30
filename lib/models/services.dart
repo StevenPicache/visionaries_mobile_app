@@ -3,11 +3,14 @@
 
 class Services{
 
+  String work_id;
   String work_name;
   String site_address;
   String site_technician;
   String site_technician_contact_number;
   String date_requested;
+  // String date_time;
+
 
   String order_creator;
   String job_description;
@@ -23,9 +26,11 @@ class Services{
           this.site_technician,
           this.site_technician_contact_number,
           this.date_requested,
+          // this.date_time,
           this.order_creator,
           this.job_description,
-          this.date_scheduled
+          this.date_scheduled,
+          this.work_id,
         }
       );
 }

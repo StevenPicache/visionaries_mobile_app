@@ -20,17 +20,21 @@ class ServicesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => DetailsScreen(serviceDetails: service,))),
+          MaterialPageRoute(builder: (context) =>
+              DetailsScreen(serviceDetails: service,))),
 
       child: Container(
         height: 75,
         width: 50,
 
+
+
         child: Card(
           child: ListTile(
             // THIS WILL BE THE IMAGE OF THE BUILDING
             leading: Icon(Icons.home, size: 50,),
-            title: Text(service.work_name, style: TextStyle(fontWeight: FontWeight.bold),),
+            title: Text(service.work_name,
+              style: TextStyle(fontWeight: FontWeight.bold),),
             subtitle: Text(service.site_address),
             trailing: Icon(Icons.arrow_forward_ios, size: 30,),
 

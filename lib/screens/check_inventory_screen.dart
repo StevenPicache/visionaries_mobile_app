@@ -3,15 +3,12 @@
 
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:visionariesmobileapp/constants.dart';
-
-
 import 'package:visionariesmobileapp/models/Items.dart';
 import 'package:visionariesmobileapp/components/items_card.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:visionariesmobileapp/utils/user_feedback_utils.dart';
 
 
 class CheckInventory extends StatefulWidget {
@@ -86,9 +83,12 @@ class _CheckInventoryState extends State<CheckInventory> {
                 if (value.isEmpty) {
                   return 'Please enter username.';
                 }
+                else{
+                  itemToSearch = value;
+                };
                },
 
-              style: TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 15, color: Colors.white),
               decoration: new InputDecoration(
                   hintText: "Camera, Key Fobs",
                   suffixIcon: new IconButton(
@@ -115,8 +115,8 @@ class _CheckInventoryState extends State<CheckInventory> {
                 color: Theme.of(context).primaryColor,
                 splashColor: Theme.of(context).accentColor,
 
-
                 onPressed: () {
+                  getInventoryDetails(itemToSearch);
                   print("Helloo Raised button");
                 },
                 child: Text(
@@ -132,13 +132,9 @@ class _CheckInventoryState extends State<CheckInventory> {
 
             Expanded(
               child: Container(
-
                 height: MediaQuery.of(context).size.height * .55,
                 width: MediaQuery.of(context).size.width * .95,
 
-                // constraints: BoxConstraints(
-                //     minHeight: 100,
-                // ),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black,
@@ -168,43 +164,56 @@ class _CheckInventoryState extends State<CheckInventory> {
   getInventoryDetails(String upcCode) async {
     try {
 
-      String urlAndroid = "http://10.0.2.2:5000/workorders";
-      String urlIOS = "http://127.0.0.1:5000/workorders";
+      Map data = {
+        'upc': upcCode,
+      };
 
-      final response = await http.get(urlIOS);
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-        List<Items> tempInventoryItems = [];
-        Map<String, dynamic> map = result;
-        int i = 0;
-        int dataLength = map['workOrders'].length;
-
-        while (i < dataLength) {
-          // tempInventoryItems.add(Items(
-          //     work_name: map['workOrders'][i]['Title'] ??
-          //         'No data was received from server',
-          //     site_address: map['workOrders'][i]['Address'] ??
-          //         'No data was received from server',
-          //     site_technician: map['workOrders'][i]['Contact_Name'] ??
-          //         'No data was received from server',
-          //     site_technician_contact_number: map['workOrders'][i]
-          //     ['Contact_Cell'] ??
-          //         'No data was received from server',
-          //     date_requested: map['workOrders'][i]['Date_Requested'] ??
-          //         'No data was received from server',
-          //     order_creator: map['workOrders'][i]['Requested_By'] ??
-          //         'No data was received from server',
-          //     job_description: map['workOrders'][i]['Scope_of_Work'] ??
-          //         'No data was received ',
-          //     date_scheduled: map['workOrders'][i]['Sceduled_For'] ??
-          //         'No data was received from server'));
-          // i += 1;
-        };
-
-      } else {
-        print(response.statusCode);
+      if(upcCode != ""){
+        FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BARCODE_CHECK_INVENTORY").show();
       }
+
+      else{
+        String urlAndroid = "http://10.0.2.2:5000/inventory";
+        String myApiUrl = urlAndroid + PORT_NUMBER;
+        final response = await http.get(urlAndroid);
+
+        // var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH,
+        //     headers: <String, String>{
+        //       'Content-Type': 'application/json; charset=UTF-8',
+        //     }, body: jsonEncode(data));
+
+
+        if (response.statusCode == 200) {
+          final result = json.decode(response.body);
+          List<Items> tempInventoryItems = [];
+          Map<String, dynamic> map = result;
+          int i = 0;
+          int dataLength = map['inventory'].length;
+
+          while (i < dataLength) {
+            tempInventoryItems.add(Items(
+                item_name: map['inventory'][i]['item_name'] ??
+                    'No data was received from server',
+                item_location: map['inventory'][i]['item_location'] ??
+                    'No data was received from server',
+                item_quantity: map['inventory'][i]['item_quantity'].toString() ??
+                    'No data was received from server',
+                item_manufacturer: map['inventory'][i]['Manufacturer'] ??
+                'No data was received from server'
+            ));
+            i += 1;
+
+          };
+
+          setState(() {
+            item = tempInventoryItems;
+          });
+        } else {
+          print(response.statusCode);
+        }
+      }
+
+
     } catch (e) {
       print(e);
     }
