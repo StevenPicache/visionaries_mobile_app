@@ -120,12 +120,20 @@ class _TodayServicesState extends State<TodayServices> {
 
   getCategories() async {
     try {
-      String urlAndroid = "http://10.0.2.2:5000/workorders";
+      //String urlAndroid = "http://10.0.2.2:5000/workorders";
+      String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+          ""+PORT_NUMBER+
+          ""+API_SERVICES_URL_WORKORDERS+"";
+
       final response = await http.get(urlAndroid);
       parseData(response);
 
     } catch (e) {
-      String urlIOS = "http://127.0.0.1:5000/workorders";
+      //String urlIOS = "http://127.0.0.1:5000/workorders";
+      String urlIOS = ""+EMULATOR_API_URL_IOS+""
+          ""+PORT_NUMBER+
+          ""+API_SERVICES_URL_WORKORDERS+"";
+
       final response = await http.get(urlIOS);
       parseData(response);
     }
@@ -147,9 +155,7 @@ class _TodayServicesState extends State<TodayServices> {
       while (i < dataLength) {
 
         try{
-
           tempServices.add(Services(
-
             work_name: map['workOrders'][i]['Title'] ??
                 'No data was received from server',
             site_address: map['workOrders'][i]['Address'] ??

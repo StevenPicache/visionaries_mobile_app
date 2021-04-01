@@ -83,10 +83,11 @@ class _CheckInventoryState extends State<CheckInventory> {
                 if (value.isEmpty) {
                   return 'Please enter username.';
                 }
-                else{
-                  itemToSearch = value;
-                };
                },
+
+               onChanged: (value) {
+                itemToSearch = value;
+              },
 
               style: TextStyle(fontSize: 15, color: Colors.white),
               decoration: new InputDecoration(
@@ -116,7 +117,7 @@ class _CheckInventoryState extends State<CheckInventory> {
                 splashColor: Theme.of(context).accentColor,
 
                 onPressed: () {
-                  getInventoryDetails(itemToSearch);
+                  Determine_What_Action(itemToSearch);
                   print("Helloo Raised button");
                 },
                 child: Text(
@@ -161,59 +162,76 @@ class _CheckInventoryState extends State<CheckInventory> {
   }
 
 
-  getInventoryDetails(String upcCode) async {
-    try {
+  getInventoryDetails(response){
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      List<Items> tempInventoryItems = [];
+      Map<String, dynamic> map = result;
+      int i = 0;
+      int dataLength = map['inventory'].length;
 
-      Map data = {
-        'upc': upcCode,
+      while (i < dataLength) {
+        tempInventoryItems.add(Items(
+          item_name: map['inventory'][i]['item_name'] ??
+            'No data was received from server',
+          item_location: map['inventory'][i]['item_location'] ??
+            'No data was received from server',
+          item_quantity: map['inventory'][i]['item_quantity'].toString() ??
+            'No data was received from server',
+          item_manufacturer: map['inventory'][i]['Manufacturer'] ??
+            'No data was received from server'));
+        i += 1;
       };
 
-      if(upcCode != ""){
-        FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BARCODE_CHECK_INVENTORY").show();
+      setState(() {
+        item = tempInventoryItems;
+      });
+    } 
+        
+    else {
+      print(response.statusCode);
+    }
+
+
+  }
+
+  Determine_What_Action(String itemName) async {
+    try {
+      if(itemName == ""){
+        
+        try{
+          String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+              ""+PORT_NUMBER+
+              ""+API_SERVICES_URL_INVENTORY+"";
+
+          final response = await http.get(urlAndroid);
+          getInventoryDetails(response);
+        }
+
+        catch(e){
+          String urlAndroid = ""+EMULATOR_API_URL_IOS+""
+            ""+PORT_NUMBER+
+            ""+API_SERVICES_URL_INVENTORY+"";
+
+          final response = await http.get(urlAndroid);
+          getInventoryDetails(response);
+        }
+
       }
 
       else{
-        String urlAndroid = "http://10.0.2.2:5000/inventory";
-        String myApiUrl = urlAndroid + PORT_NUMBER;
-        final response = await http.get(urlAndroid);
+        //String urlAndroid = "http://10.0.2.2:5000/inventory";
+        
+        String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+            ""+PORT_NUMBER+
+            ""+API_SERVICES_URL_ITEM_SEARCH+
+            "/$itemName";
 
-        // var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH,
-        //     headers: <String, String>{
-        //       'Content-Type': 'application/json; charset=UTF-8',
-        //     }, body: jsonEncode(data));
-
-
-        if (response.statusCode == 200) {
-          final result = json.decode(response.body);
-          List<Items> tempInventoryItems = [];
-          Map<String, dynamic> map = result;
-          int i = 0;
-          int dataLength = map['inventory'].length;
-
-          while (i < dataLength) {
-            tempInventoryItems.add(Items(
-                item_name: map['inventory'][i]['item_name'] ??
-                    'No data was received from server',
-                item_location: map['inventory'][i]['item_location'] ??
-                    'No data was received from server',
-                item_quantity: map['inventory'][i]['item_quantity'].toString() ??
-                    'No data was received from server',
-                item_manufacturer: map['inventory'][i]['Manufacturer'] ??
-                'No data was received from server'
-            ));
-            i += 1;
-
-          };
-
-          setState(() {
-            item = tempInventoryItems;
-          });
-        } else {
-          print(response.statusCode);
-        }
+        final response = await http.get(urlAndroid); 
+        getInventoryDetails(response);
+        itemToSearch="";
+        itemController.clear();
       }
-
-
     } catch (e) {
       print(e);
     }

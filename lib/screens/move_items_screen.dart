@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/utils/alert_utils.dart';
 import 'package:visionariesmobileapp/utils/user_feedback_utils.dart';
@@ -43,8 +44,12 @@ class _MoveItemsState extends State<MoveItems> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Theme.of(context).primaryColorDark,
-                  Theme.of(context).primaryColor
+                  Theme
+                      .of(context)
+                      .primaryColorDark,
+                  Theme
+                      .of(context)
+                      .primaryColor
                 ])),
 
 
@@ -52,7 +57,10 @@ class _MoveItemsState extends State<MoveItems> {
 
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.15,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.15,
             ),
 
             Padding(
@@ -70,14 +78,17 @@ class _MoveItemsState extends State<MoveItems> {
                   ),
 
                   SizedBox(
-                    width: MediaQuery.of(context).size.height * 0.090,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.090,
                   ),
 
 
                   IconButton(
                     icon: Icon(Icons.camera_alt),
                     iconSize: 50,
-                    onPressed: (){
+                    onPressed: () {
                       scan();
                     },
                   ),
@@ -100,7 +111,10 @@ class _MoveItemsState extends State<MoveItems> {
                   ),
 
                   SizedBox(
-                    width: MediaQuery.of(context).size.height * 0.05,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.05,
                   ),
 
                   //quantitySection(),
@@ -135,8 +149,8 @@ class _MoveItemsState extends State<MoveItems> {
               height: 25,
             ),
 
-            moveItemFromStore(),
-            moveItemBackToWarehouse(),
+            Move_Item_Warehouse_To_Truck(),
+            Move_Item_Truck_To_Warehouse(),
 
 
           ],
@@ -146,117 +160,117 @@ class _MoveItemsState extends State<MoveItems> {
   }
 
 
-
-  Future scan() async{
-    try{
+  Future scan() async {
+    try {
       String barcode = await BarcodeScanner.scan();
       this.barcode = barcode;
-
-      } on PlatformException catch(e){
-
-      if (e.code == BarcodeScanner.CameraAccessDenied){
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
         this.barcode = "Camera persmission not granted";
       }
-      else{
+      else {
         this.barcode = "Unknown error: $e";
       }
-
-    } on FormatException{
+    } on FormatException {
       this.barcode = "null, User did not finish the scan and just left";
     }
 
-    catch(e){
+    catch (e) {
       this.barcode = "Unknown error: $e";
     }
   }
 
 
-  Move_This_Item() async {
-    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    Map data = {
-      'upc': barcode,
-      'quantity': qty,
-      'action' : actionIdentifier
-    };
-    var jsonResponse = null;
+  Move_This_Item(param1_upc, param2_quantity, param4_identifier) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    
+    //String param1_upc = "ABC123";
+    // String param2_quantity = "2";
+    // String param3_identifier = "add";
 
-
+    String param1_upc = "ABC123";
+    String param2_quantity = "10";
+    String param3_userid = sharedPreferences.getString(USER_ID_KEY);
+  
+    print(param4_identifier);
+   
     try {
-      // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
-      String myApiUrl = EMULATOR_API_URL + PORT_NUMBER;
+      String urlAndroid = "http://10.0.2.2:5000/inventory/$param1_upc/$param2_quantity/$param3_userid/$param4_identifier";
+      //String urlAndroid = "http://10.0.2.2:5000/inventory/ABC123/5/2/warehouseToTruck";
 
-      var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH,
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          }, body: jsonEncode(data));
-
+      final response = await http.get(urlAndroid);
       print(response.statusCode);
-
-      if (response.statusCode == 200) {
-
-        jsonResponse = json.decode(response.body);
-        if (jsonResponse != null) {
-          setState(() {
-            _isLoading = false;
-          });
-
-          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_QUANTITY").show();
-        }
-      }
-
-      else if (response.statusCode == 401) {
-        if (response.reasonPhrase == 'UNAUTHORIZED') {
-          AlertUtils.getErrorAlert(context, "ERROR_USER_NOT_FOUND").show();
-        }
-      }
-
-      else {
-        setState(() {
-          _isLoading = false;
-        });
-        print(response.body);
-      }
+      move(response);
     }
-
     catch (e) {
-      print(e);
+      String urlIOS = "http://127.0.0.1:5000/inventory/$param1_upc/$param2_quantity/$param3_userid/$param4_identifier";
+      final response = await http.post(urlIOS);
+      print(response.statusCode);
+      move(response);
     }
+
+  }
+
+  move(response) {
+    if (response.statusCode == 200) {
+
+      response = json.decode(response.body);
+
+      FeedbackUtils.showFeedbackAlert(context, "ITEM_MOVE_SUCCESS").show();
+    }
+
+    else if (response.statusCode == 256) {
+
+      response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, "NOT_ENOUGH_QUANTITY_WAREHOUSE_TO_TRUCK").show();
+    }
+
+    else if (response.statusCode == 257) {
+
+      response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, "NOT_ENOUGH_QUANTITY_TRUCK_TO_WAREHOUSE").show();
+    }
+
   }
 
 
-  ElevatedButton moveItemFromStore() {
+  ElevatedButton Move_Item_Warehouse_To_Truck() {
     return ElevatedButton(
       // color: Theme.of(context).primaryColor,
       // splashColor: Theme.of(context).accentColor,
       style: ElevatedButton.styleFrom(
-        primary: Colors.black
+          primary: Colors.black
       ),
       onPressed: () {
+        barcode = "ABC123";
 
-        actionIdentifier = "1";
-
-        if (barcode == "" && quantity.text == ""){
+        if (barcode == "" && quantity.text == "") {
           print("Hello world");
-          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BOTH_TO_WAREHOUSE").show();
+          FeedbackUtils.showFeedbackAlert(
+              context, "ERROR_INVALID_BOTH_TO_WAREHOUSE").show();
         }
 
-        else if (barcode != "" && quantity.text == ""){
+        else if (barcode != "" && quantity.text == "") {
           print("Hello world");
-          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_QUANTITY").show();
+          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_QUANTITY")
+              .show();
         }
 
-        else if (barcode == "" && quantity.text != ""){
+        else if (barcode == "" && quantity.text != "") {
           print("Hello world");
-          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BARCODE").show();
+          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BARCODE")
+              .show();
         }
 
-        else{
-          Move_This_Item();
+        else {
+          Move_This_Item(barcode, qty, "warehouseToTruck");
         }
 
 
-
-        print(MediaQuery.of(context).size.height * 0.15,);
+        print(MediaQuery
+            .of(context)
+            .size
+            .height * 0.15,);
       },
       child: Text(
         "Move Item",
@@ -267,7 +281,7 @@ class _MoveItemsState extends State<MoveItems> {
     );
   }
 
-  ElevatedButton moveItemBackToWarehouse() {
+  ElevatedButton Move_Item_Truck_To_Warehouse() {
     return ElevatedButton(
       // color: Theme.of(context).primaryColor,
       // splashColor: Theme.of(context).accentColor,
@@ -275,26 +289,31 @@ class _MoveItemsState extends State<MoveItems> {
           primary: Colors.black
       ),
       onPressed: () {
-
         actionIdentifier = "2";
 
-        if (barcode == "" && quantity.text == ""){
-          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BOTH_TO_WAREHOUSE").show();
+        if (barcode == "" && quantity.text == "") {
+          FeedbackUtils.showFeedbackAlert(
+              context, "ERROR_INVALID_BOTH_TO_WAREHOUSE").show();
         }
 
-        else if (barcode != "" && quantity.text == ""){
-          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_QUANTITY").show();
+        else if (barcode != "" && quantity.text == "") {
+          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_QUANTITY")
+              .show();
         }
 
-        else if (barcode == "" && quantity.text != ""){
-          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BARCODE").show();
+        else if (barcode == "" && quantity.text != "") {
+          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BARCODE")
+              .show();
         }
 
-        else{
-          Move_This_Item();
+        else {
+          Move_This_Item(barcode, qty, "truckToWarehouse");
         }
 
-        print(MediaQuery.of(context).size.height * 0.15,);
+        print(MediaQuery
+            .of(context)
+            .size
+            .height * 0.15,);
       },
       child: Text(
         "Move Item back to warehouse",
@@ -304,5 +323,5 @@ class _MoveItemsState extends State<MoveItems> {
       ),
     );
   }
-
 }
+

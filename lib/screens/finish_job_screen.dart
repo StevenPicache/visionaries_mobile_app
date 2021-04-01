@@ -3,16 +3,15 @@
 
 
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visionariesmobileapp/components/jobequipments_card.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/JobEquipment.dart';
 import 'package:visionariesmobileapp/models/services.dart';
-
-import 'package:http/http.dart' as http;
+import 'package:visionariesmobileapp/utils/user_feedback_utils.dart';
 
 
 class FinishJob extends StatefulWidget {
@@ -30,9 +29,10 @@ class FinishJob extends StatefulWidget {
 
 class _FinishJobState extends State<FinishJob> {
 
-  List<String> itemsUsed = [];
+  List<String> itemsUsedList = [];
+  String itemUsed = "";
   List<JobEquipment> myEquipments = [];
-  bool isEnable = true;
+
 
   @override
   void initState() {
@@ -221,10 +221,6 @@ class _FinishJobState extends State<FinishJob> {
                 // --------------------------------------------
               ),
 
-
-
-
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
 
@@ -238,10 +234,16 @@ class _FinishJobState extends State<FinishJob> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
+
+                        String work_id = widget.finishService.work_id;
+
+                        finish_task(work_id, itemUsed);
+
                         // SEND REPORT
 
                         //print(itemsUsed.length);
-                        print(itemsUsed[0].toString());
+
+                        //print(itemsUsed[0].toString());
                         //print("HELLO WORLD");
                       },
                     ),
@@ -258,42 +260,20 @@ class _FinishJobState extends State<FinishJob> {
 
 
   getItems() async {
+    String param1 = widget.finishService.work_id;
+
     try {
-      //
-      // String myApiUrl = EMULATOR_API_URL + PORT_NUMBER;
-
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
       print(sharedPreferences.get('userid'));
-      Map data = {
-        // 'userid': sharedPreferences.get('userid'),
-        'workOrderId': widget.finishService.work_id
-      };
 
-
-      String urlAndroid = "http://10.0.2.2:5000/jobsites/2";
+      String urlAndroid = "http://10.0.2.2:5000/jobsites/$param1";
       final response = await http.get(urlAndroid);
-      // var response = await http.post(urlAndroid,
-      //     headers: <String, String>{
-      //       'Content-Type': 'application/json; charset=UTF-8',
-      //     }, body: jsonEncode(data));
-
       print(response.statusCode);
-
       parseData(response);
-    } catch (e) {
-      String urlIOS = "http://127.0.0.1:5000/jobsites/2";
-      final response = await http.get(urlIOS);
-      // Map data = {
-      //   // 'userid': sharedPreferences.get('userid'),
-      //   'workOrderId': widget.finishService.work_id
-      // };
-      //
-      // var response = await http.post(urlIOS,
-      //     headers: <String, String>{
-      //       'Content-Type': 'application/json; charset=UTF-8',
-      //     }, body: jsonEncode(data));
 
+    } catch (e) {
+      String urlIOS = "http://127.0.0.1:5000/jobsites/$param1";
+      final response = await http.get(urlIOS);
       print(response.statusCode);
       parseData(response);
     }
@@ -308,7 +288,6 @@ class _FinishJobState extends State<FinishJob> {
       int dataLength = map['items'].length;
 
       while (i < dataLength) {
-
         try{
           tempEquipments.add(JobEquipment(
             job_equipment_name: map['items'][i]['Item'] ??
@@ -317,20 +296,14 @@ class _FinishJobState extends State<FinishJob> {
                 'No data was received from server',));
           i += 1;
         }
-
          catch (e){
           print(e);
          }
       };
 
-      try{
-        setState(() {
-          myEquipments = tempEquipments;
-        });
-      }
-      catch(e){
-        print(e);
-      }
+      setState(() {
+        myEquipments = tempEquipments;
+      });
     }
 
     else {
@@ -340,8 +313,60 @@ class _FinishJobState extends State<FinishJob> {
 
   void removeItem(int index) {
     setState(() {
-      itemsUsed.add(myEquipments[index].job_equipment_id);
+      itemsUsedList.add(myEquipments[index].job_equipment_id);
+
+      // appending
+      itemUsed = itemUsed + myEquipments[index].job_equipment_id + ",";
       myEquipments.removeAt(index);
     });
+  }
+
+
+  void finish_task(String workID, String itemIds) async {
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    if(workID != null && itemIds.length != 0) {
+      String param1 = sharedPreferences.get(USER_ID_KEY);
+      String param2 = workID;
+      String param3 = itemIds.substring(0,itemIds.length - 1);
+
+      try {
+        //String urlAndroid = "http://10.0.2.2:5000/inventory/$param1/$param2/$param3/";
+        String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+            ""+PORT_NUMBER+
+            ""+API_SERVICES_URL_TASK_FINISHED+
+            "/$param1/$param2/$param3";
+
+        final response = await http.get(urlAndroid);
+        Sending_Feedback_Alert(response);
+      }
+
+      catch (e) {
+        //String urlIOS = "http://127.0.0.1:5000/inventory/$param1/$param2/$param3/";
+        String urlIOS = ""+EMULATOR_API_URL_IOS+""
+            ""+PORT_NUMBER+
+            ""+API_SERVICES_URL_TASK_FINISHED+
+            "/$param1/$param2/$param3";
+
+        final response = await http.get(urlIOS);
+        print(response.statusCode);
+        Sending_Feedback_Alert(response);
+      }
+    }
+
+    else{
+      FeedbackUtils.showFeedbackAlert(context, "ERROR_TASK_REPORT_FAILED").show();
+    }
+  }
+
+  Sending_Feedback_Alert(response){
+    if(response.statusCode == 200){
+      FeedbackUtils.showFeedbackAlert(context, "TASK_REPORT_SUCCESS").show();
+    }
+
+    else{
+      FeedbackUtils.showFeedbackAlert(context, "ERROR_TASK_REPORT_FAILED").show();
+    }
   }
 }

@@ -1,16 +1,17 @@
 
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/screens/home_screen.dart';
-
 import 'package:visionariesmobileapp/utils/alert_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+
+
 
 class AuthenticationScreen extends StatefulWidget {
   static final String routeName = '/auth';
@@ -43,7 +44,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
         // This line means that if the user is Logged in, The page will show 'Login'
         // if not, the page will show, 'Register'
-
         title: Text(widget.isLogin ? 'Login' : 'Register'),
       ),
 
@@ -155,7 +155,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
     try{
       // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
-      String myApiUrl = EMULATOR_API_URL + PORT_NUMBER;
+      String myApiUrl = EMULATOR_API_URL_ANDROID + PORT_NUMBER;
 
       var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
           headers: <String, String>{
@@ -171,8 +171,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             _isLoading = false;
           });
 
-          sharedPreferences.setString("token", jsonResponse['access_token']);
-          sharedPreferences.setString("userid", jsonResponse['user_id'].toString());
+          sharedPreferences.setString(USER_TOKEN_KEY, jsonResponse['access_token']);
+          sharedPreferences.setString(USER_ID_KEY, jsonResponse['user_id'].toString());
 
           print(jsonResponse['access_token']);
           print(jsonResponse['user_id']);
