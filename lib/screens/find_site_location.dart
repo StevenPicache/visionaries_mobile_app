@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-
+import 'package:http/http.dart' as http;
 import 'dart:math' show cos, sqrt, asin;
+
+import 'package:visionariesmobileapp/models/SiteLocation.dart';
 
 
 class FindSiteLocation extends StatefulWidget {
@@ -36,6 +40,10 @@ class _FindSiteLocationState extends State<FindSiteLocation> {
   PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
+
+
+  List<SiteLocation> API_Sites_Information = [];
+
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -90,6 +98,75 @@ class _FindSiteLocationState extends State<FindSiteLocation> {
 
 
 
+// --------------------------------------------------------------------------------
+
+/*
+  * FUNCTION : _getSitesAddresses()
+  *
+  * DESCRIPTION : This function retrieves the data of all sites from the API
+  *
+  * PARAMETERS : NONE
+  *
+  * RETURNS : NONE
+  */
+   _getSitesAddresses() async {
+    
+    try {
+      String urlAndroid = "http://10.0.2.2:5000/sites";
+      final response = await http.get(urlAndroid);
+
+      print(response.statusCode);
+      parseData(response);
+
+    } catch (e) {
+      String urlIOS = "http://127.0.0.1:5000/sites";
+      final response = await http.get(urlIOS);
+      print(response.statusCode);
+      parseData(response);
+    }
+  }
+
+  parseData(var response) {
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+
+      Map<String, dynamic> map = result;
+      int i = 0;
+      int dataLength = map['sites'].length;
+
+      while (i < dataLength) {
+        try{
+          API_Sites_Information.add(SiteLocation(
+            site_address: map['sites'][i]['Address'] ??
+                'No data was received from server',
+            site_name: map['sites'][i]['Title'] ??
+                'No data was received from server',
+            site_city: map['sites'][i]['City'] ??
+                'No data was received from server',
+            site_provinceState: map['sites'][i]['ProvinceState'] ??
+                'No data was received from server',
+            site_country: map['sites'][i]['Canada'] ??
+                'No data was received from server',
+
+          ));
+          i += 1;
+        }
+         catch (e){
+          print(e);
+         }
+      };
+
+      // setState(() {
+      //   myEquipments = tempEquipments;
+      // });
+    }
+
+    else {
+      print(response.statusCode);
+    }
+  }
+
+// --------------------------------------------------------------------------------
 
   /*
   * FUNCTION : _getCurrentLocation()
@@ -522,6 +599,11 @@ class _FindSiteLocationState extends State<FindSiteLocation> {
       ),
     );
   }
+
+
+
+
+
 
 }
 

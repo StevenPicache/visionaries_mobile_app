@@ -40,8 +40,6 @@ class FeedbackUtils{
         desc = 'There are not enough items in the truck';
         break;
 
-
-
       case "TASK_REPORT_SUCCESS":
         title = 'Success!';
         desc = 'The sending of the task was successful!';
