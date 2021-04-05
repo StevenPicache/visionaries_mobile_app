@@ -76,10 +76,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
 
-                    Text(
-                      "The",
-                      style: TextStyle(fontSize: 40.0, color: Colors.white),
-                      textAlign: TextAlign.center,
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "The",
+                        style: TextStyle(fontSize: 40.0, color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
 
 
@@ -89,26 +92,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     // Visionaries part
-                    Container(
-                      height: 100,
+                    Expanded(
+                        flex: 2,
+                        child: Container(
+                        height: 100,
 
-                      child: RotateAnimatedTextKit(
-                          repeatForever: true,
-                          onTap: () {
-                            print("Tap Event");
-                          },
-                          text: [
-                            "Visionaries",
-                            "Visionaries",
-                            "Visionaries",
-                          ],
-                          textStyle: TextStyle(
-                              fontSize: 60.0,
-                              fontFamily: "Horizon",
-                              color: Colors.white,
+                        child: RotateAnimatedTextKit(
+                            repeatForever: true,
+                            onTap: () {
+                              print("Tap Event");
+                            },
+                            text: [
+                              "Visionaries",
+                              "Visionaries",
+                              "Visionaries",
+                            ],
+                            textStyle: TextStyle(
+                                fontSize: 60.0,
+                                fontFamily: "Horizon",
+                                color: Colors.white,
 
-                          ),
-                          textAlign: TextAlign.left),
+                            ),
+                            textAlign: TextAlign.left),
+                      ),
                     ),
                   ],
                 ),

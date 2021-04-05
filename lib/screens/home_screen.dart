@@ -27,14 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // appBar: AppBar(
-      //   title: Text(
-      //     "Home Screen",
-      //     style: TextStyle(fontSize: 30, color: Colors.black),
-      //   ),
-      //
-      // ),
-
       child: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -172,13 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     splashColor: Theme.of(context).accentColor,
 
                     onPressed: (){
-
                       Navigator.pushNamed(context, CheckInventory.routeName);
-                      // var asd = new BarcodeScanner();
-                      // String retVal = BarcodeScanner.scan().toString();
-
-                      // scan();
-                      // FeedbackUtils.showFeedbackAlert(context, retVal).show();
                     },
 
 
@@ -309,35 +295,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-
-
-
-  // Future scan() async{
-  //   try{
-  //     String barcode = await BarcodeScanner.scan();
-  //     this.barcode = barcode;
-  //     print(barcode);
-  //     print(" ");
-  //
-  //   } on PlatformException catch(e){
-  //
-  //     if (e.code == BarcodeScanner.CameraAccessDenied){
-  //       this.barcode = "Camera persmission not granted";
-  //     }
-  //
-  //     else{
-  //       this.barcode = "Unknown error: $e";
-  //     }
-  //   } on FormatException{
-  //     this.barcode = "null, User did not finish the scan and just left";
-  //   }
-  //
-  //   catch(e){
-  //     this.barcode = "Unknown error: $e";
-  //   }
-  // }
-
-
-
 }

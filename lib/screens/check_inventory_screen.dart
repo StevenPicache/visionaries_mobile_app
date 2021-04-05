@@ -36,12 +36,6 @@ class _CheckInventoryState extends State<CheckInventory> {
 
       body: Container(
 
-        height: MediaQuery
-            .of(context)
-            .size
-            .height,
-        width: MediaQuery.of(context).size.width,
-
         decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -101,8 +95,6 @@ class _CheckInventoryState extends State<CheckInventory> {
                     splashColor: Colors.transparent,
                   ),
                 ),
-
-
               ), // This trailing comma makes auto-formatting nicer for build methods.
             ),
 
@@ -201,7 +193,6 @@ class _CheckInventoryState extends State<CheckInventory> {
         
         try{
           String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-              ""+PORT_NUMBER+
               ""+API_SERVICES_URL_INVENTORY+"";
 
           final response = await http.get(urlAndroid);
@@ -210,7 +201,6 @@ class _CheckInventoryState extends State<CheckInventory> {
 
         catch(e){
           String urlAndroid = ""+EMULATOR_API_URL_IOS+""
-            ""+PORT_NUMBER+
             ""+API_SERVICES_URL_INVENTORY+"";
 
           final response = await http.get(urlAndroid);
@@ -223,7 +213,6 @@ class _CheckInventoryState extends State<CheckInventory> {
         //String urlAndroid = "http://10.0.2.2:5000/inventory";
         
         String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-            ""+PORT_NUMBER+
             ""+API_SERVICES_URL_ITEM_SEARCH+
             "/$itemName";
 

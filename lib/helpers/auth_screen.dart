@@ -155,14 +155,29 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
     try{
       // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
-      String myApiUrl = EMULATOR_API_URL_ANDROID + PORT_NUMBER;
+      var response = null;
 
-      var response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
-          headers: <String, String>{
+      try{
+
+        String myApiUrl = EMULATOR_API_URL_ANDROID;
+        response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
+        headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-      }, body: jsonEncode(data));
+        }, body: jsonEncode(data));
 
-      print(response.statusCode);
+        print(response.statusCode);
+      }
+
+      catch (e){
+        String iosURL = EMULATOR_API_URL_IOS;
+        response = await http.post(iosURL + API_SERVICES_URL_AUTH ,
+        headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        }, body: jsonEncode(data));
+
+        print(response.statusCode);
+      }
+
 
       if(response.statusCode == 200) {
         jsonResponse = json.decode(response.body);

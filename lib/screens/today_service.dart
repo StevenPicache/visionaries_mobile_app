@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visionariesmobileapp/components/services_card.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/services.dart';
@@ -19,6 +20,7 @@ class TodayServices extends StatefulWidget {
 
 class _TodayServicesState extends State<TodayServices> {
   List<Services> myServices = [];
+
 
   @override
   void initState() {
@@ -107,9 +109,6 @@ class _TodayServicesState extends State<TodayServices> {
                     ),
                   ),
                 ),
-
-
-
               ],
             ),
           ),
@@ -119,22 +118,32 @@ class _TodayServicesState extends State<TodayServices> {
   }
 
   getCategories() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String userID = sharedPreferences.getString(USER_ID_KEY);
+
     try {
       //String urlAndroid = "http://10.0.2.2:5000/workorders";
       String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-          ""+PORT_NUMBER+
-          ""+API_SERVICES_URL_WORKORDERS+"";
+          ""+API_SERVICES_URL_WORKORDERS+"/"
+          ""+userID+"";
 
+      print(urlAndroid);
       final response = await http.get(urlAndroid);
+      print(response);
       parseData(response);
 
     } catch (e) {
-      //String urlIOS = "http://127.0.0.1:5000/workorders";
+      //String urlIOS = "http://127.0.0.1:5000/workorders/2";
+
+      print("USER ID {$userID}");
       String urlIOS = ""+EMULATOR_API_URL_IOS+""
-          ""+PORT_NUMBER+
-          ""+API_SERVICES_URL_WORKORDERS+"";
+          ""+API_SERVICES_URL_WORKORDERS+"/"
+          ""+userID+"";
+
+      print(urlIOS);
 
       final response = await http.get(urlIOS);
+      print(response.statusCode);
       parseData(response);
     }
 
@@ -172,8 +181,10 @@ class _TodayServicesState extends State<TodayServices> {
                 'No data was received ',
             date_scheduled: map['workOrders'][i]['Sceduled_For'] ??
                 'No data was received from server',
-            work_id: map['workOrders'][i]['Job_ID'].toString() ??
-                'No data was received from server',));
+            job_id: map['workOrders'][i]['Job_ID'].toString() ??
+                'No data was received from server',
+            work_id: map['workOrders'][i]['Work_ID'].toString() ??
+                'No data was received from server',));  
           i += 1;
         }
 
