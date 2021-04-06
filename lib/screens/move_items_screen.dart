@@ -77,8 +77,14 @@ class _MoveItemsState extends State<MoveItems> {
                       icon: Icon(Icons.camera_alt),
                       iconSize: 50,
                       onPressed: () {
+                        
+                        upcController.clear();
                         String retVal = scan().toString();
-                        upcController.text = retVal;
+                       
+
+                        setState(() {
+                          upcController.text = barcode;
+                        });
                       },
                     ),
                   ),
@@ -100,10 +106,11 @@ class _MoveItemsState extends State<MoveItems> {
                         barcode = value;
                       },
 
-                      style: TextStyle(fontSize: 15, color: Colors.white),
+                      style: TextStyle(fontSize: 20, color: Colors.white),
 
                       decoration: new InputDecoration(
                         hintText: "UPC code...",
+
                         suffixIcon: new IconButton(
                           highlightColor: Colors.transparent,
                           icon: new Container(width: 20.0, child: new Icon(Icons.clear)),
@@ -210,8 +217,13 @@ class _MoveItemsState extends State<MoveItems> {
 
   Future scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
-      this.barcode = barcode;
+      String str_barcode = await BarcodeScanner.scan();
+
+      this.barcode = str_barcode;
+      
+      setState(() {
+        upcController.text = str_barcode;
+      });
 
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {

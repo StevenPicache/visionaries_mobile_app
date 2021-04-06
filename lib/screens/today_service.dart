@@ -117,6 +117,8 @@ class _TodayServicesState extends State<TodayServices> {
     );
   }
 
+
+
   getCategories() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String userID = sharedPreferences.getString(USER_ID_KEY);
@@ -149,6 +151,18 @@ class _TodayServicesState extends State<TodayServices> {
 
     finally{
       print(e);
+      // print("USER ID {$userID}");
+      // userID = "2";
+      // String urlIOS = ""+MY_COMPUTER_API_URL_IOS+""
+      //     ""+API_SERVICES_URL_WORKORDERS+"/"
+      //     ""+userID+"";
+
+      // print(urlIOS);
+
+      // final response = await http.get(urlIOS);
+      // print(response.statusCode);
+      // parseData(response);
+
     }
   }
 

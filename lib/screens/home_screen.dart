@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/helpers/bar_code_scanner.dart';
 import 'package:visionariesmobileapp/screens/check_inventory_screen.dart';
@@ -23,6 +24,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   String barcode = "";
+
+  @override
+  void initState() {
+    // Will execute the downloadInfo method
+    isLoggedIn();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -262,6 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     splashColor: Theme.of(context).accentColor,
 
                     onPressed: () {
+                      logout();
                       Navigator.pushNamed(context, LoginScreen.routeName);
                     },
 
@@ -282,6 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         Text(
                           'Logout',
+                          
                           style: TextStyle(color: Colors.black87 , fontSize: 15),
                         ),
                       ],
@@ -294,5 +304,27 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+
+  logout() async {
+     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+     sharedPreferences.clear();
+  }
+
+  isLoggedIn() async {
+    
+    try {
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      print(sharedPreferences.getString(USER_ID_KEY));
+
+      if(sharedPreferences.getString(USER_ID_KEY) == null){
+          Navigator.pushNamed(context, LoginScreen.routeName);
+      }
+    }
+
+    catch (e){
+      print("Error happened on isLoggedIn");
+    }
   }
 }

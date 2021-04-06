@@ -157,6 +157,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
       var response = null;
 
+
+
       try{
 
         String myApiUrl = EMULATOR_API_URL_ANDROID;
@@ -177,6 +179,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
         print(response.statusCode);
       }
+
+      // finally{
+      //   print(e)
+      //   // String deviceURL = MY_COMPUTER_API_URL_IOS;
+      //   // response = await http.post(deviceURL + API_SERVICES_URL_AUTH ,
+      //   // headers: <String, String>{
+      //   // 'Content-Type': 'application/json; charset=UTF-8',
+      //   // }, body: jsonEncode(data));
+
+      //   // print(response.statusCode);
+      // }
+
 
 
       if(response.statusCode == 200) {
@@ -216,6 +230,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     catch(e){
       print(e);
     }
+
+    
   }
 
 
