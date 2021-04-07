@@ -7,15 +7,14 @@
 import 'package:flutter/material.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/services.dart';
+import 'package:visionariesmobileapp/screens/finish_job_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
   @override
-  final Services myServices;
+  // a references to the services object that contains all the information of the card
+  final Services serviceDetails;
+  const DetailsScreen({this.serviceDetails});
 
-  final String test1 =
-      "asdasdlkasjdlkasdasdasdasasdasdasdasdasdasdasdasdasdasdasdasdajsdklajskldjklajskldj,zmxcn,mnxm,zncALSDJKLASJDKLAJ,ZXMCN,AMSDWQIUJLKASJDZX,CMNASLDKJAKLSJZXC,MNASLKDJQIOWEJASDASDQWEASD";
-
-  const DetailsScreen({this.myServices});
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,22 +22,31 @@ class DetailsScreen extends StatelessWidget {
 
 
       body: Container(
-        height: 600,
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height
+        ),
+
         decoration: BoxDecoration(
+//          color: Colors.grey
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Theme.of(context).primaryColorDark,
-                Theme.of(context).primaryColor
+                Theme
+                    .of(context)
+                    .primaryColorDark,
+
+                Colors.grey,
+                Colors.grey,
+
+//                Theme
+//                    .of(context)
+//                    .primaryColor
               ]),
         ),
 
 
         child: SingleChildScrollView(
-
-
-
           child: Column(
             children: <Widget>[
               Row(
@@ -46,19 +54,24 @@ class DetailsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      //test1,
-                      myServices.name,
+                      serviceDetails.work_name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
                       ),
                     ),
                   ),
+
+
                   SizedBox(
                     width: kSmallMargin,
                   ),
+
+
                   Flexible(
                     child: Hero(
                       tag: 'logo',
@@ -68,6 +81,8 @@ class DetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
+
                 ],
               ),
 
@@ -76,48 +91,50 @@ class DetailsScreen extends StatelessWidget {
                 height: kSmallMargin,
               ),
 
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kLargeMargin),
-                    child: Text(
-                      "Job Description: ",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColorLight,
-                      ),
+
+              // SITE CONTACT
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                child: Row(
+
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "Site Contact:",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w500,
+                            color: Theme
+                                .of(context)
+                                .primaryColorLight,
+                          ),
+                        ),
+                      ]
                     ),
-                  )
-                ],
-              ),
 
-              SizedBox(
-                width: kSmallMargin,
-                height: kSmallMargin,
-              ),
+                    const SizedBox(
+                      width: 43.0,
+                    ),
 
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(kLargeMargin),
+
+                    Expanded(
                       child: Text(
-                        test1,
-                        //"THIS IS WHERE",
+                        serviceDetails.site_technician,
                         style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).primaryColorDark),
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                          color: Theme
+                              .of(context)
+                              .primaryColorLight,
+                        ),
                       ),
-                    ),
-                  )
-                ],
-
+                    )
+                  ],
+                ),
               ),
-
 
 
               SizedBox(
@@ -125,48 +142,45 @@ class DetailsScreen extends StatelessWidget {
                 height: kSmallMargin,
               ),
 
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kLargeMargin),
-                    child: Text(
-                      "Site Contact:",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColorLight,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-
-              SizedBox(
-                width: kSmallMargin,
-                height: kSmallMargin,
-              ),
 
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(kLargeMargin),
-                      child: Text(
-                        test1,
-                        //"THIS IS WHERE",
+              // SITE CONTACT
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Contact Phone:",
                         style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).primaryColorDark),
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                          color: Theme
+                              .of(context)
+                              .primaryColorLight,
+                        ),
                       ),
-                    ),
-                  )
-                ],
+
+                      const SizedBox(
+                        width: 20.0,
+                      ),
+
+                      Expanded(
+                        child: Text(
+                          serviceDetails.site_technician_contact_number,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w500,
+                            color: Theme
+                                .of(context)
+                                .primaryColorLight,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-
-
 
               SizedBox(
                 width: kSmallMargin,
@@ -174,29 +188,163 @@ class DetailsScreen extends StatelessWidget {
               ),
 
 
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                  child: Row(
+
+                    children: [
+                      Text(
+                        "Site Address:",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                          color: Theme
+                              .of(context)
+                              .primaryColorLight,
+                        ),
+                      ),
+
+                      const SizedBox(
+                        width: 40.0,
+                      ),
+
+                      Expanded(
+                        child: Text(
+                          serviceDetails.site_address,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w500,
+                            color: Theme
+                                .of(context)
+                                .primaryColorLight,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
               SizedBox(
                 width: kSmallMargin,
                 height: kSmallMargin,
               ),
-              // Button logout
 
+
+
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Scheduled Date:",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                          color: Theme
+                              .of(context)
+                              .primaryColorLight,
+                        ),
+                      ),
+
+
+                      const SizedBox(
+                        width: 15.0,
+                      ),
+
+
+                      Expanded(
+                        child: Text(
+                          serviceDetails.date_scheduled,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w500,
+                            color: Theme
+                                .of(context)
+                                .primaryColorLight,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
+
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Technicians: ",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                          color: Theme
+                              .of(context)
+                              .primaryColorLight,
+                        ),
+                      ),
+
+                      const SizedBox(
+                        width: 43.0,
+                      ),
+
+                      Expanded(
+                        child: Text(
+                          serviceDetails.site_technician,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w500,
+                            color: Theme
+                                .of(context)
+                                .primaryColorLight,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                width: kSmallMargin,
+                height: 50,
+              ),
+
+
+              // JOB DESCRIPTION
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding:
                     const EdgeInsets.symmetric(horizontal: kLargeMargin),
                     child: Text(
-                      "Requested by: ",
+                      "Job Description: ",
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 30.0,
                         fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
                       ),
                     ),
                   )
                 ],
               ),
 
+              SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
 
 
               Row(
@@ -204,13 +352,25 @@ class DetailsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(kLargeMargin),
-                      child: Text(
-                        test1,
-                        //"THIS IS WHERE",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).primaryColorDark),
+                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            serviceDetails.job_description,
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark),
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -218,20 +378,21 @@ class DetailsScreen extends StatelessWidget {
               ),
 
 
-              Row(
 
-                mainAxisAlignment: MainAxisAlignment.end,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(kLargeMargin),
                     child: FlatButton(
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.black,
                       child: Text(
-                        "Finish",
-                        style: TextStyle(color: Colors.black87),
+                        "Complete Job",
+                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        print("HELLO WORLD");
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => FinishJob(finishService: serviceDetails,)));
                       },
                     ),
                   )
@@ -242,5 +403,28 @@ class DetailsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String Format_Schedule_Date(myDate){
+
+    int strLength = myDate.length;
+    String myStr = myDate.removeAt(0);
+    myStr = myDate.removeAt(strLength -1 );
+    print(myStr);
+  }
+
+
+
+  String get_finish_time(){
+
+    var now = DateTime.now();
+    String retVal = now.year.toString() +'-'
+                  + now.month.toString() + '-'
+                  + now.day.toString() +' '
+                  + now.hour.toString() + ':'
+                  + now.minute.toString() + ':'
+                  + now.second.toString().padLeft(2,'0');
+
+    return retVal;
   }
 }

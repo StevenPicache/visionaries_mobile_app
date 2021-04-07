@@ -1,18 +1,22 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:visionariesmobileapp/constants.dart';
-import 'package:visionariesmobileapp/screens/auth_screen.dart';
+import 'package:visionariesmobileapp/helpers/auth_screen.dart';
+
 
 
 
 class LoginScreen extends StatefulWidget {
-  static final String routeName = '/';
+  static final String routeName = '/login';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,31 +90,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Visionaries part
                     Container(
-                      height: 100,
+                    height: 100,
 
-                      child: RotateAnimatedTextKit(
-                          repeatForever: true,
-                          onTap: () {
-                            print("Tap Event");
-                          },
-                          text: [
-                            "Visionaries",
-                            "Visionaries",
-                            "Visionaries",
-                          ],
-                          textStyle: TextStyle(
-                              fontSize: 60.0,
-                              fontFamily: "Horizon",
-                              color: Colors.white,
+                    child: RotateAnimatedTextKit(
+                        repeatForever: true,
+                        onTap: () {
+                          print("Tap Event");
+                        },
+                        text: [
+                          "Visionaries",
+                          "Visionaries",
+                          "Visionaries",
+                        ],
+                        textStyle: TextStyle(
+                            fontSize: 50.0,
+                            fontFamily: "Horizon",
+                            color: Colors.white,
 
-                          ),
-                          textAlign: TextAlign.left),
-                    ),
-
-
-
-
-
+                        ),
+                        textAlign: TextAlign.left),
+                      ),
                   ],
                 ),
               ),
@@ -134,30 +133,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.pushNamed(context, AuthenticationScreen.routeName, arguments: true);
                 },
               ),
-
-
-
-              // LOGIN BUTTON
-              FlatButton(
-                color: Theme.of(context).primaryColor,
-                splashColor: Theme.of(context).accentColor,
-
-                child: Text('Register', style: TextStyle(color: Theme.of(context).primaryColorDark),),
-                onPressed: () {
-                  // THIS LINE OF CODE WILL HANDLE THE PRESS FROM THE USER
-                  // AND CHANGE SCREENS
-                  Navigator.pushNamed(context, AuthenticationScreen.routeName, arguments: false);
-                },
-              ),
-
-
-
-
-
             ],
           ),
         ),
       ),
     );
+
   }
 }
+
+
+
+
+
+
+
+
+
+
+

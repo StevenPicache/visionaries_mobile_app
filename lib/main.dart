@@ -1,15 +1,15 @@
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 
-import 'package:visionariesmobileapp/screens/auth_screen.dart';
+import 'package:visionariesmobileapp/helpers/auth_screen.dart';
+import 'package:visionariesmobileapp/screens/check_inventory_screen.dart';
 import 'package:visionariesmobileapp/screens/find_site_location.dart';
 import 'package:visionariesmobileapp/screens/home_screen.dart';
 import 'package:visionariesmobileapp/screens/login_screen.dart';
+import 'package:visionariesmobileapp/screens/move_items_screen.dart';
 import 'package:visionariesmobileapp/screens/today_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -19,12 +19,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
 
-      /*Initialize the app to start at the login screen first before getting inside the application*/
-      //initialRoute: LoginScreen.routeName,
 
       // FOR DEBUGGING PURPOSES. I MADE TO TO START WITH THE HOME SCREEN INSTEAD OF LOGIN SCREEN
+      //initialRoute: LoginScreen.routeName,
       initialRoute: HomeScreen.routeName,
-
 
       onGenerateRoute: (RouteSettings settings) {
         var routes = <String, WidgetBuilder>{
@@ -44,6 +42,8 @@ class MyApp extends StatelessWidget {
           HomeScreen.routeName: (context) => HomeScreen(),
           TodayServices.routeName: (context) => TodayServices(),
           FindSiteLocation.routeName: (context) => FindSiteLocation(),
+          CheckInventory.routeName: (context) => CheckInventory(),
+          MoveItems.routeName: (context) => MoveItems(),
 
         };
 
@@ -55,11 +55,8 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.white,
           primaryColorDark: Colors.black87,
           primaryColorLight: Colors.white,
-
           primaryTextTheme: TextTheme(bodyText1: TextStyle(color : Colors.black)),
           accentColor: Colors.lightGreenAccent),
-
-
     );
 
   }
