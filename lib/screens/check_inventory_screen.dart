@@ -219,7 +219,6 @@ class _CheckInventoryState extends State<CheckInventory> {
       }
 
       else{
-        //String urlAndroid = "http://10.0.2.2:5000/inventory";
 
 
          try{
