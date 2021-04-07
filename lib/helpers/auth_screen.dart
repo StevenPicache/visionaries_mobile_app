@@ -145,29 +145,27 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
 
   signIn(String email, pass) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   
     Map data = {
       'username': username,
       'password': password
     };
-    var jsonResponse = null;
+   
 
 
     try{
       // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
       var response = null;
 
-
-
       try{
-
-        String myApiUrl = EMULATOR_API_URL_ANDROID;
-        response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
+        String deviceURL = MY_COMPUTER_API_URL_IOS;
+        response = await http.post(deviceURL + API_SERVICES_URL_AUTH ,
         headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         }, body: jsonEncode(data));
 
         print(response.statusCode);
+        AuthemticaticateUser(response);
       }
 
       catch (e){
@@ -178,21 +176,33 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         }, body: jsonEncode(data));
 
         print(response.statusCode);
+        AuthemticaticateUser(response);
       }
 
-      // finally{
-      //   print(e)
-      //   // String deviceURL = MY_COMPUTER_API_URL_IOS;
-      //   // response = await http.post(deviceURL + API_SERVICES_URL_AUTH ,
-      //   // headers: <String, String>{
-      //   // 'Content-Type': 'application/json; charset=UTF-8',
-      //   // }, body: jsonEncode(data));
+      finally{
+        print(response.statusCode);
+        String myApiUrl = EMULATOR_API_URL_ANDROID;
+        response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
+        headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        }, body: jsonEncode(data));
 
-      //   // print(response.statusCode);
-      // }
+        print(response.statusCode);
+        AuthemticaticateUser(response);
+      }
+    }
+
+    catch(e){
+      print(e);
+    }
+
+    
+  }
 
 
-
+  AuthemticaticateUser(response) async {
+     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+     var jsonResponse = null;
       if(response.statusCode == 200) {
         jsonResponse = json.decode(response.body);
         if(jsonResponse != null) {
@@ -225,13 +235,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         });
         print(response.body);
       }
-    }
-
-    catch(e){
-      print(e);
-    }
-
-    
   }
 
 

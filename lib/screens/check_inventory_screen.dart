@@ -190,13 +190,14 @@ class _CheckInventoryState extends State<CheckInventory> {
   Determine_What_Action(String itemName) async {
     try {
       if(itemName == ""){
-        
+
         try{
-          String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+          String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
               ""+API_SERVICES_URL_INVENTORY+"";
 
-          final response = await http.get(urlAndroid);
+          final response = await http.get(urlDevice);
           getInventoryDetails(response);
+          print(response.statusCode);
         }
 
         catch(e){
@@ -207,19 +208,57 @@ class _CheckInventoryState extends State<CheckInventory> {
           getInventoryDetails(response);
         }
 
+        finally{
+          String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+              ""+API_SERVICES_URL_INVENTORY+"";
+
+          final response = await http.get(urlAndroid);
+          getInventoryDetails(response);
+        }
+
       }
 
       else{
         //String urlAndroid = "http://10.0.2.2:5000/inventory";
-        
-        String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-            ""+API_SERVICES_URL_ITEM_SEARCH+
-            "/$itemName";
 
-        final response = await http.get(urlAndroid); 
-        getInventoryDetails(response);
-        itemToSearch="";
-        itemController.clear();
+
+         try{
+           String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
+              ""+API_SERVICES_URL_ITEM_SEARCH+
+              "/$itemName";
+
+            final response = await http.get(urlDevice); 
+            getInventoryDetails(response);
+            itemToSearch="";
+            itemController.clear();;
+        }
+
+        catch(e){
+                  
+          String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+              ""+API_SERVICES_URL_ITEM_SEARCH+
+              "/$itemName";
+
+            final response = await http.get(urlAndroid); 
+            getInventoryDetails(response);
+            itemToSearch="";
+            itemController.clear();
+        }
+
+        finally{
+           String urlIOS = ""+EMULATOR_API_URL_IOS+""
+              ""+API_SERVICES_URL_ITEM_SEARCH+
+              "/$itemName";
+
+            final response = await http.get(urlIOS); 
+            getInventoryDetails(response);
+            itemToSearch="";
+            itemController.clear();
+        }
+
+
+
+
       }
     } catch (e) {
       print(e);

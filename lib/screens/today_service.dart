@@ -125,13 +125,17 @@ class _TodayServicesState extends State<TodayServices> {
 
     try {
       //String urlAndroid = "http://10.0.2.2:5000/workorders";
-      String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+
+
+      print("USER ID {$userID}");
+      String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
           ""+API_SERVICES_URL_WORKORDERS+"/"
           ""+userID+"";
 
-      print(urlAndroid);
-      final response = await http.get(urlAndroid);
-      print(response);
+      print(urlDevice);
+
+      final response = await http.get(urlDevice);
+      print(response.statusCode);
       parseData(response);
 
     } catch (e) {
@@ -150,18 +154,14 @@ class _TodayServicesState extends State<TodayServices> {
     }
 
     finally{
-      print(e);
-      // print("USER ID {$userID}");
-      // userID = "2";
-      // String urlIOS = ""+MY_COMPUTER_API_URL_IOS+""
-      //     ""+API_SERVICES_URL_WORKORDERS+"/"
-      //     ""+userID+"";
+      String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+          ""+API_SERVICES_URL_WORKORDERS+"/"
+          ""+userID+"";
 
-      // print(urlIOS);
-
-      // final response = await http.get(urlIOS);
-      // print(response.statusCode);
-      // parseData(response);
+      print(urlAndroid);
+      final response = await http.get(urlAndroid);
+      print(response);
+      parseData(response);
 
     }
   }

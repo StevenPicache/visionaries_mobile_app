@@ -25,11 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String barcode = "";
 
-  @override
-  void initState() {
-    // Will execute the downloadInfo method
-    isLoggedIn();
-  }
+  // @override
+  // void initState() {
+  //   // Will execute the downloadInfo method
+  //   isLoggedIn();
+  // }
 
 
   @override

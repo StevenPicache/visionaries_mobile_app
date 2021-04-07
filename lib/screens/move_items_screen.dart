@@ -256,13 +256,13 @@ class _MoveItemsState extends State<MoveItems> {
           "$param3_userid/"
           "$param4_identifier";
 
-
       print(urlAndroid);
 
       final response = await http.get(urlAndroid);
       print(response.statusCode);
       move(response);
     }
+
     catch (e) {
       String urlIOS = EMULATOR_API_URL_IOS
           +"/"
@@ -274,6 +274,20 @@ class _MoveItemsState extends State<MoveItems> {
       print(response.statusCode);
       move(response);
     }
+
+
+    finally{
+      String urlDevice = MY_COMPUTER_API_URL_IOS
+          +"/"
+              "$param1_upc/"
+              "$param2_quantity/"
+              "$param3_userid/"
+              "$param4_identifier";
+      final response = await http.post(urlDevice);
+      print(response.statusCode);
+      move(response);
+    }
+
   }
 
   move(response) {
@@ -281,8 +295,7 @@ class _MoveItemsState extends State<MoveItems> {
       response = json.decode(response.body);
       FeedbackUtils.showFeedbackAlert(context, "ITEM_MOVE_SUCCESS").show();
     }
-
-    else if (response.statusCode == 256) {
+    if (response.statusCode == 256) {
       response = json.decode(response.body);
       FeedbackUtils.showFeedbackAlert(context, "NOT_ENOUGH_QUANTITY_WAREHOUSE_TO_TRUCK").show();
     }
