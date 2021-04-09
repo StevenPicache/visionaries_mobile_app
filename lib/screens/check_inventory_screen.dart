@@ -3,7 +3,9 @@
 
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/Items.dart';
 import 'package:visionariesmobileapp/components/items_card.dart';
@@ -188,6 +190,11 @@ class _CheckInventoryState extends State<CheckInventory> {
   }
 
   Determine_What_Action(String itemName) async {
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String userID = sharedPreferences.getString(USER_ID_KEY);
+    String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
+    
     try {
       if(itemName == ""){
 
@@ -195,16 +202,28 @@ class _CheckInventoryState extends State<CheckInventory> {
           String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
               ""+API_SERVICES_URL_INVENTORY+"";
 
-          final response = await http.get(urlDevice);
-          getInventoryDetails(response);
+          //final response = await http.get(urlDevice);
+          
+          final response = await http.get(
+            Uri.parse(urlDevice),
+            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+          );
+
           print(response.statusCode);
+          getInventoryDetails(response);
+
         }
 
         catch(e){
-          String urlAndroid = ""+EMULATOR_API_URL_IOS+""
+          String urlIOS = ""+EMULATOR_API_URL_IOS+""
             ""+API_SERVICES_URL_INVENTORY+"";
 
-          final response = await http.get(urlAndroid);
+          final response = await http.get(
+            Uri.parse(urlIOS),
+            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+          );
+
+          print(response.statusCode);
           getInventoryDetails(response);
         }
 
@@ -212,21 +231,28 @@ class _CheckInventoryState extends State<CheckInventory> {
           String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
               ""+API_SERVICES_URL_INVENTORY+"";
 
-          final response = await http.get(urlAndroid);
+          final response = await http.get(
+            Uri.parse(urlAndroid),
+            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+          );
+          
+          print(response.statusCode);
           getInventoryDetails(response);
         }
 
       }
 
       else{
-
-
          try{
            String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
               ""+API_SERVICES_URL_ITEM_SEARCH+
               "/$itemName";
 
-            final response = await http.get(urlDevice); 
+            final response = await http.get(
+              Uri.parse(urlDevice),
+              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+            );
+
             getInventoryDetails(response);
             itemToSearch="";
             itemController.clear();;
@@ -238,7 +264,11 @@ class _CheckInventoryState extends State<CheckInventory> {
               ""+API_SERVICES_URL_ITEM_SEARCH+
               "/$itemName";
 
-            final response = await http.get(urlAndroid); 
+          final response = await http.get(
+            Uri.parse(urlAndroid),
+            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+          );
+
             getInventoryDetails(response);
             itemToSearch="";
             itemController.clear();
@@ -249,20 +279,18 @@ class _CheckInventoryState extends State<CheckInventory> {
               ""+API_SERVICES_URL_ITEM_SEARCH+
               "/$itemName";
 
-            final response = await http.get(urlIOS); 
+            final response = await http.get(
+              Uri.parse(urlIOS),
+              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+            );
+
             getInventoryDetails(response);
             itemToSearch="";
             itemController.clear();
         }
-
-
-
-
       }
     } catch (e) {
       print(e);
     }
   }
-
-
 }

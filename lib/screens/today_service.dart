@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,8 +9,9 @@ import 'package:visionariesmobileapp/components/services_card.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/services.dart';
 
+
 import 'package:http/http.dart' as http;
-import 'package:visionariesmobileapp/utils/alert_utils.dart';
+
 
 class TodayServices extends StatefulWidget {
   static final String routeName = '/today';
@@ -118,54 +120,54 @@ class _TodayServicesState extends State<TodayServices> {
   }
 
 
-
   getCategories() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String userID = sharedPreferences.getString(USER_ID_KEY);
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      String userID = sharedPreferences.getString(USER_ID_KEY);
+      String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
 
-    try {
-      //String urlAndroid = "http://10.0.2.2:5000/workorders";
+      try {
+        String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
+            ""+API_SERVICES_URL_WORKORDERS+"/"
+            ""+userID+"";
 
+        final response = await http.get(
+          Uri.parse(urlDevice),
+          headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+        );
 
-      print("USER ID {$userID}");
-      String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
-          ""+API_SERVICES_URL_WORKORDERS+"/"
-          ""+userID+"";
+        print(response.statusCode);
+        parseData(response);
 
-      print(urlDevice);
+      } catch (e) {
+        String urlIOS = ""+EMULATOR_API_URL_IOS+""
+            ""+API_SERVICES_URL_WORKORDERS+"/"
+            ""+userID+"";
 
-      final response = await http.get(urlDevice);
-      print(response.statusCode);
-      parseData(response);
+        final response = await http.get(
+          Uri.parse(urlIOS),
+          headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+        );
 
-    } catch (e) {
-      //String urlIOS = "http://127.0.0.1:5000/workorders/2";
+        print(response.statusCode);
+        parseData(response);
+      }
 
-      print("USER ID {$userID}");
-      String urlIOS = ""+EMULATOR_API_URL_IOS+""
-          ""+API_SERVICES_URL_WORKORDERS+"/"
-          ""+userID+"";
+      finally{
+        print("USER ID {$userID}");
+        String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+            ""+API_SERVICES_URL_WORKORDERS+"/"
+            ""+userID+"";
 
-      print(urlIOS);
+        final response = await http.get(
+          Uri.parse(urlAndroid),
+          headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+        );
 
-      final response = await http.get(urlIOS);
-      print(response.statusCode);
-      parseData(response);
+        print(response.statusCode);
+        parseData(response);
+
+      }
     }
-
-    finally{
-      String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-          ""+API_SERVICES_URL_WORKORDERS+"/"
-          ""+userID+"";
-
-      print(urlAndroid);
-      final response = await http.get(urlAndroid);
-      print(response);
-      parseData(response);
-
-    }
-  }
-
 
   parseData(var response){
     if (response.statusCode == 200) {

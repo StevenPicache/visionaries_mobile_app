@@ -180,7 +180,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       }
 
       finally{
-        print(response.statusCode);
+        print("AUTH");
         String myApiUrl = EMULATOR_API_URL_ANDROID;
         response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
         headers: <String, String>{
@@ -195,8 +195,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     catch(e){
       print(e);
     }
-
-    
   }
 
 
