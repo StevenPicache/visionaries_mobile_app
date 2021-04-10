@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
@@ -31,16 +32,21 @@ class _MoveItemsState extends State<MoveItems> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text(
             "Move items"
         ),
       ),
 
+      resizeToAvoidBottomInset: false,
       body: Container(
-
         decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black
+          ),
             gradient: LinearGradient(
+
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
@@ -52,163 +58,217 @@ class _MoveItemsState extends State<MoveItems> {
                       .primaryColor
                 ])),
 
+        height: MediaQuery.of(context).size.height,
 
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
 
-            children: [
+        child: Column(
+          children: [
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-
-                  Text(
-                    "Input Item code:  ",
-                    style: TextStyle(
-                        fontSize: 35,
-                        color: Colors.white
-                    ),
-                  ),
-
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      iconSize: 50,
-                      onPressed: () {
-                        
-                        upcController.clear();
-                        String retVal = scan().toString();
-                       
-
-                        setState(() {
-                          upcController.text = barcode;
-                        });
-                      },
-                    ),
-                  ),
-                ],
+            Flexible(
+              child: Hero(
+                tag: 'logo',
+                child: Image(
+                  height: 175,
+                  image: AssetImage('images/logo.png'),
+                ),
               ),
+            ),
 
+            SizedBox(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.0125,
+            ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 1,
+            Expanded(
+              child: Center(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .5,
 
-                    child: new TextFormField(
-                      maxLines: 1,
-                      controller: upcController,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
 
-                      onChanged: (value) {
-                        barcode = value;
-                      },
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
 
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                            Text(
+                              "Input Item code:  ",
+                              style: TextStyle(
+                                  fontSize: 35,
+                                  color: Colors.white
+                              ),
+                            ),
 
-                      decoration: new InputDecoration(
-                        hintText: "UPC code...",
+                            SizedBox(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.0125,
+                            ),
 
-                        suffixIcon: new IconButton(
-                          highlightColor: Colors.transparent,
-                          icon: new Container(width: 20.0, child: new Icon(Icons.clear)),
-                          onPressed: () {
-                            upcController.clear();
-                          },
-                          splashColor: Colors.transparent,
+                            Expanded(
+                              flex: 1,
+                              child: ElevatedButton(
+
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                ),
+
+                                onPressed: () {
+                                  upcController.clear();
+                                  String retVal = scan().toString();
+
+                                  setState(() {
+                                    upcController.text = barcode;
+                                  });
+                                },
+
+                                child: Text(
+                                  "Scan",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
 
 
-              SizedBox(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.0125,
-              ),
-
-              Row(
-                children: [
-
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      "Input Quantity:",
-                      style: TextStyle(
-                          fontSize: 35,
-                          color: Colors.white
-                      ),
-                    ),
-                  ),
-
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
+                        SizedBox(
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.0125,
                         ),
-                      ),
 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 1,
 
-                      child: TextField(
-                        style: TextStyle(
-                          fontSize: 20,
+                              child: new TextFormField(
+                                maxLines: 1,
+                                controller: upcController,
+
+                                onChanged: (value) {
+                                  barcode = value;
+                                },
+
+                                style: TextStyle(fontSize: 20, color: Colors.white),
+
+                                decoration: new InputDecoration(
+                                  hintText: "UPC code...",
+
+                                  suffixIcon: new IconButton(
+                                    highlightColor: Colors.transparent,
+                                    icon: new Container(width: 20.0, child: new Icon(Icons.clear)),
+                                    onPressed: () {
+                                      upcController.clear();
+                                    },
+                                    splashColor: Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        controller: quantity,
-                        // THIS LINE OF CODE IS SAVING THE INPUT DATA TO THE EMAIL STRING
-                        onChanged: (value) {
-                          qty = value;
-                        },
-                        keyboardType: TextInputType.emailAddress,
 
-                      ),
+
+                        SizedBox(
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.0125,
+                        ),
+
+                        Row(
+                          children: [
+
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                "Input Quantity:",
+                                style: TextStyle(
+                                    fontSize: 35,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ),
+
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black,
+                                  ),
+                                ),
+
+
+                                child: TextField(
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                  controller: quantity,
+                                  // THIS LINE OF CODE IS SAVING THE INPUT DATA TO THE EMAIL STRING
+                                  onChanged: (value) {
+                                    qty = value;
+                                  },
+                                  keyboardType: TextInputType.emailAddress,
+
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        ),
+
+
+
+                        Row(
+                          children: <Widget> [
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                    height: MediaQuery.of(context).size.height * 0.1,
+                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    child: Move_Item_Warehouse_To_Truck()
+                                )
+                            ),
+
+                            SizedBox(
+                              width: MediaQuery.of(context).size.height * 0.025,
+                            ),
+
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                    height: MediaQuery.of(context).size.height * 0.1,
+                                    width: MediaQuery.of(context).size.width * 0.1,
+                                    child: Move_Item_Truck_To_Warehouse()
+                                )
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
-
-
-
-              Row(
-                children: <Widget> [
-                  Expanded(
-                      flex: 2,
-                      child: Container(
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          width: MediaQuery.of(context).size.width * 0.1,
-                          child: Move_Item_Warehouse_To_Truck()
-                      )
-                  ),
-
-                  SizedBox(
-                    width: MediaQuery.of(context).size.height * 0.025,
-                  ),
-
-                  Expanded(
-                      flex: 2,
-                      child: Container(
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          width: MediaQuery.of(context).size.width * 0.1,
-                          child: Move_Item_Truck_To_Warehouse()
-                      )
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -218,9 +278,7 @@ class _MoveItemsState extends State<MoveItems> {
   Future scan() async {
     try {
       String str_barcode = await BarcodeScanner.scan();
-
       this.barcode = str_barcode;
-      
       setState(() {
         upcController.text = str_barcode;
       });
@@ -244,79 +302,14 @@ class _MoveItemsState extends State<MoveItems> {
   }
 
 
-  Move_This_Item(param1_upc, param2_quantity, param4_identifier) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String param3_userid = sharedPreferences.getString(USER_ID_KEY);
-
-    try {
-      String urlAndroid = EMULATOR_API_URL_ANDROID
-          +"/"
-          "$param1_upc/"
-          "$param2_quantity/"
-          "$param3_userid/"
-          "$param4_identifier";
-
-      print(urlAndroid);
-
-      final response = await http.get(urlAndroid);
-      print(response.statusCode);
-      move(response);
-    }
-
-    catch (e) {
-      String urlIOS = EMULATOR_API_URL_IOS
-          +"/"
-          "$param1_upc/"
-          "$param2_quantity/"
-          "$param3_userid/"
-          "$param4_identifier";
-      final response = await http.post(urlIOS);
-      print(response.statusCode);
-      move(response);
-    }
-
-
-    finally{
-      String urlDevice = MY_COMPUTER_API_URL_IOS
-          +"/"
-              "$param1_upc/"
-              "$param2_quantity/"
-              "$param3_userid/"
-              "$param4_identifier";
-      final response = await http.post(urlDevice);
-      print(response.statusCode);
-      move(response);
-    }
-
-  }
-
-  move(response) {
-    if (response.statusCode == 200) {
-      response = json.decode(response.body);
-      FeedbackUtils.showFeedbackAlert(context, "ITEM_MOVE_SUCCESS").show();
-    }
-    if (response.statusCode == 256) {
-      response = json.decode(response.body);
-      FeedbackUtils.showFeedbackAlert(context, "NOT_ENOUGH_QUANTITY_WAREHOUSE_TO_TRUCK").show();
-    }
-
-    else if (response.statusCode == 257) {
-      response = json.decode(response.body);
-      FeedbackUtils.showFeedbackAlert(context, "NOT_ENOUGH_QUANTITY_TRUCK_TO_WAREHOUSE").show();
-    }
-  }
-
-
   ElevatedButton Move_Item_Warehouse_To_Truck() {
     return ElevatedButton(
-      // color: Theme.of(context).primaryColor,
-      // splashColor: Theme.of(context).accentColor,
       style: ElevatedButton.styleFrom(
           primary: Colors.black,
       ),
 
       onPressed: () {
-        barcode = "ABC123";
+        // barcode = "ABC123";
 
         if (barcode == "" && quantity.text == "") {
           FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BOTH_TO_WAREHOUSE").show();
@@ -360,12 +353,14 @@ class _MoveItemsState extends State<MoveItems> {
         }
 
         else if (barcode == "" && quantity.text != "") {
-          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BARCODE").show();
+          FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BARCODE_CHECK_INVENTORY").show();
         }
 
         else {
           Move_This_Item(barcode, qty, "truckToWarehouse");
         }
+
+
       },
       child: Text(
         "To Warehouse",
@@ -375,5 +370,106 @@ class _MoveItemsState extends State<MoveItems> {
       ),
     );
   }
+
+
+  Move_This_Item(param1_upc, param2_quantity, param4_identifier) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String userID = sharedPreferences.getString(USER_ID_KEY);
+    String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
+
+    try {
+      String urlAndroid = EMULATOR_API_URL_ANDROID
+          +"${API_SERVICES_URL_INVENTORY}/"
+          "$param1_upc/"
+          "$param2_quantity/"
+          "$userID/"
+          "$param4_identifier";
+
+      print(urlAndroid);
+
+      final response = await http.get(
+        Uri.parse(urlAndroid),
+        headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+      );
+      print(response.statusCode);
+      move(response);
+    }
+
+    catch (e) {
+      String urlIOS = EMULATOR_API_URL_IOS
+         +"${API_SERVICES_URL_INVENTORY}/"
+          "$param1_upc/"
+          "$param2_quantity/"
+          "$userID/"
+          "$param4_identifier";
+
+      final response = await http.get(
+        Uri.parse(urlIOS),
+        headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+      );
+
+      print(response.statusCode);
+      move(response);
+    }
+
+    finally{
+      String urlDevice = MY_COMPUTER_API_URL_IOS
+          +"${API_SERVICES_URL_INVENTORY}/"
+              "$param1_upc/"
+              "$param2_quantity/"
+              "$userID/"
+              "$param4_identifier";
+      
+      final response = await http.get(
+        Uri.parse(urlDevice),
+        headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+      );
+      print(response.statusCode);
+      move(response);
+    }
+
+  }
+
+  move(response) {
+    if (response.statusCode == 200) {
+      response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, "ITEM_MOVE_SUCCESS").show();
+    }
+    
+    else if (response.statusCode == 256) {
+      response = json.decode(response.body);
+      
+      FeedbackUtils.showFeedbackAlert(context, "NOT_ENOUGH_QUANTITY_TRUCK_TO_WAREHOUSE").show();
+    }
+
+    else if (response.statusCode == 257) {
+      response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, "NOT_ENOUGH_QUANTITY_WAREHOUSE_TO_TRUCK").show();
+    }
+
+    else if (response.statusCode == 258) {
+      response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, "ERROR_258").show();
+    }
+
+
+    else if (response.statusCode == 500) {
+      response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, "ERROR_CODE_500").show();
+    }
+
+    else if (response.statusCode == 404) {
+      //response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, response.reasonPhrase.toString()).show();
+    }
+
+    else{
+      response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, "Not found").show();
+    }
+
+  }
+
+
 }
 

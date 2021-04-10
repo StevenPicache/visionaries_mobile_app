@@ -165,7 +165,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         }, body: jsonEncode(data));
 
         print(response.statusCode);
-        AuthemticaticateUser(response);
+        AuthenticaticateUser(response);
       }
 
       catch (e){
@@ -176,7 +176,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         }, body: jsonEncode(data));
 
         print(response.statusCode);
-        AuthemticaticateUser(response);
+        AuthenticaticateUser(response);
       }
 
       finally{
@@ -188,7 +188,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         }, body: jsonEncode(data));
 
         print(response.statusCode);
-        AuthemticaticateUser(response);
+        AuthenticaticateUser(response);
       }
     }
 
@@ -198,7 +198,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
 
-  AuthemticaticateUser(response) async {
+  AuthenticaticateUser(response) async {
      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
      var jsonResponse = null;
       if(response.statusCode == 200) {

@@ -36,98 +36,97 @@ class _CheckInventoryState extends State<CheckInventory> {
           title: Text("Tasks")
       ),
 
-      body: Container(
+      body: SingleChildScrollView(
+        child: Container(
 
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Theme
-                    .of(context)
-                    .primaryColorDark,
+          height: MediaQuery.of(context).size.height,
 
-                Colors.grey,
-                Colors.grey,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme
+                      .of(context)
+                      .primaryColorDark,
 
-              ]),
-        ),
+                  Colors.grey,
+                  Colors.grey,
 
-        child: Column(
-          children: <Widget>[
-
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .025,
-            ),
-
-            Text(
-              "Enter the item name",
-              style: TextStyle(
-                  fontSize: 35,
-                  color: Colors.white
-              ),
-            ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: new TextFormField(
-
-              maxLines: 1,
-              controller: itemController,
-
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter username.';
-                }
-               },
-
-               onChanged: (value) {
-                itemToSearch = value;
-              },
-
-              style: TextStyle(fontSize: 15, color: Colors.white),
-              decoration: new InputDecoration(
-                  hintText: "Camera, Key Fobs",
-                  suffixIcon: new IconButton(
-                    highlightColor: Colors.transparent,
-                    icon: new Container(width: 36.0, child: new Icon(Icons.clear)),
-                    onPressed: () {
-                      itemController.clear();
-                    },
-                    splashColor: Colors.transparent,
-                  ),
-                ),
-              ), // This trailing comma makes auto-formatting nicer for build methods.
-            ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-
-
-              RaisedButton(
-
-                color: Theme.of(context).primaryColor,
-                splashColor: Theme.of(context).accentColor,
-
-                onPressed: () {
-                  Determine_What_Action(itemToSearch);
-                  print("Helloo Raised button");
-                },
-                child: Text(
-                    "Search",
-                ),
-              ),
-            ],
+                ]),
           ),
 
+          child: Column(
+            children: <Widget>[
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .025,
+              ),
+
+              Text(
+                "Enter the item name",
+                style: TextStyle(
+                    fontSize: 35,
+                    color: Colors.white
+                ),
+              ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: new TextFormField(
+
+                maxLines: 1,
+                controller: itemController,
+
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter username.';
+                  }
+                 },
+
+                 onChanged: (value) {
+                  itemToSearch = value;
+                },
+
+                style: TextStyle(fontSize: 15, color: Colors.white),
+                decoration: new InputDecoration(
+                    hintText: "Camera, Key Fobs",
+                    suffixIcon: new IconButton(
+                      highlightColor: Colors.transparent,
+                      icon: new Container(width: 36.0, child: new Icon(Icons.clear)),
+                      onPressed: () {
+                        itemController.clear();
+                      },
+                      splashColor: Colors.transparent,
+                    ),
+                  ),
+                ), // This trailing comma makes auto-formatting nicer for build methods.
+              ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
 
 
+                RaisedButton(
+
+                  color: Theme.of(context).primaryColor,
+                  splashColor: Theme.of(context).accentColor,
+
+                  onPressed: () {
+                    Determine_What_Action(itemToSearch);
+                    print("Helloo Raised button");
+                  },
+                  child: Text(
+                      "Search",
+                  ),
+                ),
+              ],
+            ),
 
 
-            Expanded(
-              child: Container(
-                height: MediaQuery.of(context).size.height * .55,
+              Container(
+                height: MediaQuery.of(context).size.height * .60,
                 width: MediaQuery.of(context).size.width * .95,
 
                 decoration: BoxDecoration(
@@ -148,8 +147,8 @@ class _CheckInventoryState extends State<CheckInventory> {
 
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

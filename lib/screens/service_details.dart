@@ -91,6 +91,71 @@ class DetailsScreen extends StatelessWidget {
                 height: kSmallMargin,
               ),
 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: kLargeMargin),
+                    child: Text(
+                      "Job Description: ",
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.w500,
+                        color: Theme
+                            .of(context)
+                            .primaryColorLight,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+             SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
+
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
+
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            serviceDetails.job_description,
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Theme
+                                    .of(context)
+                                    .primaryColorDark),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+              SizedBox(
+                width: kSmallMargin,
+                height: kSmallMargin,
+              ),
+
+
+
+
+
 
               // SITE CONTACT
               Padding(
@@ -98,6 +163,7 @@ class DetailsScreen extends StatelessWidget {
                 child: Row(
 
                   children: [
+                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -157,7 +223,7 @@ class DetailsScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: Theme
                               .of(context)
-                              .primaryColorLight,
+                              .primaryColorLight
                         ),
                       ),
 
@@ -257,7 +323,10 @@ class DetailsScreen extends StatelessWidget {
 
                       Expanded(
                         child: Text(
-                          serviceDetails.date_scheduled,
+
+                          Format_Schedule_Date(serviceDetails.date_scheduled),
+                          //serviceDetails.date_scheduled.toString().removeAt(0),
+
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.w500,
@@ -316,67 +385,8 @@ class DetailsScreen extends StatelessWidget {
 
               SizedBox(
                 width: kSmallMargin,
-                height: 50,
+                height: MediaQuery.of(context).size.height * .0125,
               ),
-
-
-              // JOB DESCRIPTION
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: kLargeMargin),
-                    child: Text(
-                      "Job Description: ",
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.w500,
-                        color: Theme
-                            .of(context)
-                            .primaryColorLight,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-
-              SizedBox(
-                width: kSmallMargin,
-                height: kSmallMargin,
-              ),
-
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
-
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Text(
-                            serviceDetails.job_description,
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColorDark),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-
 
 
               Row(
@@ -408,9 +418,10 @@ class DetailsScreen extends StatelessWidget {
   String Format_Schedule_Date(myDate){
 
     int strLength = myDate.length;
-    String myStr = myDate.removeAt(0);
-    myStr = myDate.removeAt(strLength -1 );
+    String myStr = myDate.substring(1,strLength - 1);
     print(myStr);
+
+    return myStr;
   }
 
 

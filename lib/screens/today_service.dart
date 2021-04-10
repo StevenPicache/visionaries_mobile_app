@@ -207,7 +207,6 @@ class _TodayServicesState extends State<TodayServices> {
         catch (e){
           print(e);
         }
-
       };
 
       setState(() {

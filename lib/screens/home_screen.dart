@@ -25,11 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String barcode = "";
 
-  // @override
-  // void initState() {
-  //   // Will execute the downloadInfo method
-  //   isLoggedIn();
-  // }
+  @override
+  void initState() {
+    // Will execute the downloadInfo method
+    isLoggedIn();
+  }
 
 
   @override
@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         width: MediaQuery.of(context).size.width,
 
         decoration: BoxDecoration(
+
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

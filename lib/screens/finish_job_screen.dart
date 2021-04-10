@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -195,7 +196,7 @@ class _FinishJobState extends State<FinishJob> {
                 ),
 
                 height: MediaQuery.of(context).size.height * .55,
-                width: MediaQuery.of(context).size.width * .80,
+                width: MediaQuery.of(context).size.width * .70,
 
                 // --------------------------------------------
                 child: ListView.builder(
@@ -248,6 +249,10 @@ class _FinishJobState extends State<FinishJob> {
 
 
   getItems() async {
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String userID = sharedPreferences.getString(USER_ID_KEY);
+    String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
     String param1 = widget.finishService.work_id;
 
     try {
@@ -257,13 +262,22 @@ class _FinishJobState extends State<FinishJob> {
       String urlAndroid = ""+EMULATOR_API_URL_ANDROID+"/jobsites/$param1";
 
       print(urlAndroid);
-      final response = await http.get(urlAndroid);
+      
+      final response = await http.get(
+        Uri.parse(urlAndroid),
+        headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+      );
+
       print(response.statusCode);
       parseData(response);
 
     } catch (e) {
       String urlIOS = ""+EMULATOR_API_URL_IOS+"/jobsites/$param1";
-      final response = await http.get(urlIOS);
+      final response = await http.get(
+        Uri.parse(urlIOS),
+        headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+      );
+      
       print(response.statusCode);
       parseData(response);
     }
@@ -304,8 +318,6 @@ class _FinishJobState extends State<FinishJob> {
   void removeItem(int index) {
     setState(() {
       itemsUsedList.add(myEquipments[index].job_equipment_id);
-
-      // appending
       itemUsed = itemUsed + myEquipments[index].job_equipment_id + ",";
       myEquipments.removeAt(index);
     });
@@ -314,29 +326,34 @@ class _FinishJobState extends State<FinishJob> {
 
   void finish_task(String workID, String itemIds) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String param1 = sharedPreferences.get(USER_ID_KEY);
-    
+    String userID = sharedPreferences.getString(USER_ID_KEY);
+    String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
+  
     
     if(workID != null && itemIds.length != 0) {
-          String itemsString = itemIds.substring(0,itemIds.length - 1);
+      String itemsString = itemIds.substring(0,itemIds.length - 1);
 
-          try {
-            //String urlAndroid = "http://10.0.2.2:5000/inventory/$param1/$param2/$param3/";
-            String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-                ""+API_SERVICES_URL_TASK_FINISHED+
-                "/$param1/$workID/$itemsString";
+      try {
+        String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+          ""+API_SERVICES_URL_TASK_FINISHED+
+          "/$userID/$workID/$itemsString";
 
-            final response = await http.get(urlAndroid);
-            Sending_Feedback_Alert(response);
-          }
+          final response = await http.get(
+            Uri.parse(urlAndroid),
+             headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+          );
+          Sending_Feedback_Alert(response);
+        }
 
-          catch (e) {
-            //String urlIOS = "http://127.0.0.1:5000/inventory/$param1/$param2/$param3/";
-            String urlIOS = ""+EMULATOR_API_URL_IOS+""
-                ""+API_SERVICES_URL_TASK_FINISHED+
-                 "/$param1/$workID/$itemsString";
+      catch (e) {
+        String urlIOS = ""+EMULATOR_API_URL_IOS+""
+          ""+API_SERVICES_URL_TASK_FINISHED+
+          "/$userID/$workID/$itemsString";
 
-            final response = await http.get(urlIOS);
+          final response = await http.get(
+            Uri.parse(urlIOS),
+              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+            );
             print(response.statusCode);
             Sending_Feedback_Alert(response);
           }
@@ -344,31 +361,33 @@ class _FinishJobState extends State<FinishJob> {
 
         else{
            try {
-            //String urlAndroid = "http://10.0.2.2:5000/workorders/2/5";
             String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
                 ""+API_SERVICES_URL_WORKORDERS_WITHOUT_ITEMS+
-                "/$param1/$workID";
+                "/$userID/$workID";
             
             print(urlAndroid);
             print(" ");
-            final response = await http.get(urlAndroid);
-            print(response.statusCode);
+            final response = await http.get(
+              Uri.parse(urlAndroid),
+              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+            );
             Sending_Feedback_Alert(response);
           }
 
           catch (e) {
-            //String urlIOS = "http://127.0.0.1:5000/inventory/$param1/$param2/";
             String urlIOS = ""+EMULATOR_API_URL_IOS+""
-                ""+API_SERVICES_URL_WORKORDERS_WITHOUT_ITEMS+
-                "/$param1/$workID";
+              ""+API_SERVICES_URL_WORKORDERS_WITHOUT_ITEMS+
+              "/$userID/$workID";
 
-            final response = await http.get(urlIOS);
-            print(response.statusCode);
-            Sending_Feedback_Alert(response);
-          }
-        }
+            final response = await http.get(
+            Uri.parse(urlIOS),
+            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+        );
 
-     
+        print(response.statusCode);
+        Sending_Feedback_Alert(response);
+      }
+    }
   }
 
   Sending_Feedback_Alert(response){
@@ -381,7 +400,5 @@ class _FinishJobState extends State<FinishJob> {
     else{
       FeedbackUtils.showFeedbackAlert(context, "ERROR_TASK_REPORT_FAILED").show();
     }
-
-
   }
 }

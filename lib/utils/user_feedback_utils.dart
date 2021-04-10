@@ -16,13 +16,13 @@ class FeedbackUtils{
 
       case "ERROR_INVALID_BOTH_TO_WAREHOUSE":
         title = 'Invalid';
-        desc = 'Please specify quantity';
+        desc = 'Please specify item code and quantity';
         break;
 
       case "ERROR_INVALID_BARCODE_CHECK_INVENTORY":
         title = 'Invalid';
-        desc = 'Item barcode was empty';
-        break;
+        desc = 'Item barcode was empty or not found';
+        break;  
 
       case "ERROR_TASK_REPORT_FAILED":
         title = 'Error occured';
@@ -37,8 +37,22 @@ class FeedbackUtils{
 
       case "NOT_ENOUGH_QUANTITY_TRUCK_TO_WAREHOUSE":
         title = 'Not enough items';
-        desc = 'There are not enough items in the truck';
+        desc = 'There are not enough items in the warehouse';
         break;
+
+
+      case "ERROR_CODE_258":
+        title = 'Error!';
+        desc = 'Internal Server Error, Try logging out and logging back';
+        break;
+
+      case "NOT FOUND":
+        title = 'Code not found';
+        desc = 'The item code for this item was not found in the database';
+        break;
+
+
+
 
       case "TASK_REPORT_SUCCESS":
         title = 'Success!';
