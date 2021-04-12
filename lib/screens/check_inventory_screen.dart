@@ -1,7 +1,3 @@
-
-
-
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -33,7 +29,7 @@ class _CheckInventoryState extends State<CheckInventory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Tasks")
+          title: Text("Shop inventory")
       ),
 
       body: SingleChildScrollView(
@@ -167,8 +163,6 @@ class _CheckInventoryState extends State<CheckInventory> {
         tempInventoryItems.add(Items(
           item_name: map['inventory'][i]['item_name'] ??
             'No data was received from server',
-          item_location: map['inventory'][i]['item_location'] ??
-            'No data was received from server',
           item_quantity: map['inventory'][i]['item_quantity'].toString() ??
             'No data was received from server',
           item_manufacturer: map['inventory'][i]['Manufacturer'] ??
@@ -198,11 +192,9 @@ class _CheckInventoryState extends State<CheckInventory> {
       if(itemName == ""){
 
         try{
-          String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
+          String urlDevice = ""+EMULATOR_API_URL_ANDROID+""
               ""+API_SERVICES_URL_INVENTORY+"";
 
-          //final response = await http.get(urlDevice);
-          
           final response = await http.get(
             Uri.parse(urlDevice),
             headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
@@ -225,67 +217,38 @@ class _CheckInventoryState extends State<CheckInventory> {
           print(response.statusCode);
           getInventoryDetails(response);
         }
-
-        finally{
-          String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-              ""+API_SERVICES_URL_INVENTORY+"";
-
-          final response = await http.get(
-            Uri.parse(urlAndroid),
-            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-          );
-          
-          print(response.statusCode);
-          getInventoryDetails(response);
-        }
-
       }
 
       else{
          try{
-           String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
-              ""+API_SERVICES_URL_ITEM_SEARCH+
-              "/$itemName";
+           String url = ""+EMULATOR_API_URL_ANDROID+""
+               ""+API_SERVICES_URL_ITEM_SEARCH+
+               "/$itemName";
 
-            final response = await http.get(
-              Uri.parse(urlDevice),
-              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-            );
+           final response = await http.get(
+             Uri.parse(url),
+             headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+           );
 
-            getInventoryDetails(response);
-            itemToSearch="";
-            itemController.clear();;
+           getInventoryDetails(response);
+           itemToSearch="";
+           itemController.clear();
+
         }
 
         catch(e){
-                  
-          String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+          String urlIOS = ""+EMULATOR_API_URL_IOS+""
               ""+API_SERVICES_URL_ITEM_SEARCH+
               "/$itemName";
 
           final response = await http.get(
-            Uri.parse(urlAndroid),
+            Uri.parse(urlIOS),
             headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
           );
 
-            getInventoryDetails(response);
-            itemToSearch="";
-            itemController.clear();
-        }
-
-        finally{
-           String urlIOS = ""+EMULATOR_API_URL_IOS+""
-              ""+API_SERVICES_URL_ITEM_SEARCH+
-              "/$itemName";
-
-            final response = await http.get(
-              Uri.parse(urlIOS),
-              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-            );
-
-            getInventoryDetails(response);
-            itemToSearch="";
-            itemController.clear();
+          getInventoryDetails(response);
+          itemToSearch="";
+          itemController.clear();
         }
       }
     } catch (e) {

@@ -158,11 +158,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       var response = null;
 
       try{
-        String deviceURL = MY_COMPUTER_API_URL_IOS;
-        response = await http.post(deviceURL + API_SERVICES_URL_AUTH ,
-        headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        }, body: jsonEncode(data));
+        print("AUTH");
+        String myApiUrl = EMULATOR_API_URL_ANDROID;
+        response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            }, body: jsonEncode(data));
 
         print(response.statusCode);
         AuthenticaticateUser(response);
@@ -179,17 +180,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         AuthenticaticateUser(response);
       }
 
-      finally{
-        print("AUTH");
-        String myApiUrl = EMULATOR_API_URL_ANDROID;
-        response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
-        headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        }, body: jsonEncode(data));
-
-        print(response.statusCode);
-        AuthenticaticateUser(response);
-      }
     }
 
     catch(e){

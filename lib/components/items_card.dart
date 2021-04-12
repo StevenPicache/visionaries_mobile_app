@@ -26,7 +26,7 @@ class ItemCard extends StatelessWidget {
                 fontWeight: FontWeight.bold
             ),
           ),
-          subtitle: Text(item.item_location),
+          subtitle: Text(item.item_manufacturer),
           trailing: Text(item.item_quantity),
         ),
       ),

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/services.dart';
-import 'package:visionariesmobileapp/screens/service_details.dart';
+import 'package:visionariesmobileapp/helpers/service_details.dart';
 
 class ServicesCard extends StatelessWidget {
   static final String routeName = '/services';

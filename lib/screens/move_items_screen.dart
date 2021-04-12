@@ -98,7 +98,7 @@ class _MoveItemsState extends State<MoveItems> {
                             Text(
                               "Input Item code:  ",
                               style: TextStyle(
-                                  fontSize: 35,
+                                  fontSize: 20,
                                   color: Colors.white
                               ),
                             ),
@@ -111,7 +111,7 @@ class _MoveItemsState extends State<MoveItems> {
                             ),
 
                             Expanded(
-                              flex: 1,
+                              flex: 2,
                               child: ElevatedButton(
 
                                 style: ElevatedButton.styleFrom(
@@ -129,7 +129,7 @@ class _MoveItemsState extends State<MoveItems> {
 
                                 child: Text(
                                   "Scan",
-                                  style: TextStyle(
+                                   style: TextStyle(
                                       fontSize: 20,
                                       color: Colors.black
                                   ),
@@ -196,7 +196,7 @@ class _MoveItemsState extends State<MoveItems> {
                               child: Text(
                                 "Input Quantity:",
                                 style: TextStyle(
-                                    fontSize: 35,
+                                    fontSize: 20,
                                     color: Colors.white
                                 ),
                               ),
@@ -363,7 +363,7 @@ class _MoveItemsState extends State<MoveItems> {
 
       },
       child: Text(
-        "To Warehouse",
+        "To Shop",
         style: TextStyle(
             fontSize: 20
         ),
@@ -378,17 +378,15 @@ class _MoveItemsState extends State<MoveItems> {
     String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
 
     try {
-      String urlAndroid = EMULATOR_API_URL_ANDROID
+      String url = EMULATOR_API_URL_ANDROID
           +"${API_SERVICES_URL_INVENTORY}/"
-          "$param1_upc/"
-          "$param2_quantity/"
-          "$userID/"
-          "$param4_identifier";
-
-      print(urlAndroid);
+              "$param1_upc/"
+              "$param2_quantity/"
+              "$userID/"
+              "$param4_identifier";
 
       final response = await http.get(
-        Uri.parse(urlAndroid),
+        Uri.parse(url),
         headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
       );
       print(response.statusCode);
@@ -411,23 +409,6 @@ class _MoveItemsState extends State<MoveItems> {
       print(response.statusCode);
       move(response);
     }
-
-    finally{
-      String urlDevice = MY_COMPUTER_API_URL_IOS
-          +"${API_SERVICES_URL_INVENTORY}/"
-              "$param1_upc/"
-              "$param2_quantity/"
-              "$userID/"
-              "$param4_identifier";
-      
-      final response = await http.get(
-        Uri.parse(urlDevice),
-        headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-      );
-      print(response.statusCode);
-      move(response);
-    }
-
   }
 
   move(response) {

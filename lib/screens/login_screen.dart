@@ -23,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
         title: Text("Visionaries Employee App"),
       ),
 
-
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(

@@ -126,12 +126,11 @@ class _TodayServicesState extends State<TodayServices> {
       String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
 
       try {
-        String urlDevice = ""+MY_COMPUTER_API_URL_IOS+""
+        String url = ""+EMULATOR_API_URL_ANDROID+""
             ""+API_SERVICES_URL_WORKORDERS+"/"
             ""+userID+"";
-
         final response = await http.get(
-          Uri.parse(urlDevice),
+          Uri.parse(url),
           headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
         );
 
@@ -150,22 +149,6 @@ class _TodayServicesState extends State<TodayServices> {
 
         print(response.statusCode);
         parseData(response);
-      }
-
-      finally{
-        print("USER ID {$userID}");
-        String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-            ""+API_SERVICES_URL_WORKORDERS+"/"
-            ""+userID+"";
-
-        final response = await http.get(
-          Uri.parse(urlAndroid),
-          headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-        );
-
-        print(response.statusCode);
-        parseData(response);
-
       }
     }
 
