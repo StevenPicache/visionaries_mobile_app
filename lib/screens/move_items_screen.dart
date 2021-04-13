@@ -277,7 +277,10 @@ class _MoveItemsState extends State<MoveItems> {
 
   Future scan() async {
     try {
+      //String str_barcode = await BarcodeScanner.scan();
+
       String str_barcode = await BarcodeScanner.scan();
+      
       this.barcode = str_barcode;
       setState(() {
         upcController.text = str_barcode;
@@ -385,6 +388,7 @@ class _MoveItemsState extends State<MoveItems> {
               "$userID/"
               "$param4_identifier";
 
+      print(url);
       final response = await http.get(
         Uri.parse(url),
         headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
@@ -430,7 +434,7 @@ class _MoveItemsState extends State<MoveItems> {
 
     else if (response.statusCode == 258) {
       response = json.decode(response.body);
-      FeedbackUtils.showFeedbackAlert(context, "ERROR_258").show();
+      FeedbackUtils.showFeedbackAlert(context, "ERROR_CODE_258").show();
     }
 
 

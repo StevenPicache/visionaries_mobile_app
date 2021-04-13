@@ -117,7 +117,7 @@ class _FinishJobState extends State<FinishJob> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            "Site Technician:",
+                            "Site contact:",
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.w500,
