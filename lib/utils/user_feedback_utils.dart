@@ -46,6 +46,12 @@ class FeedbackUtils{
         desc = 'Internal Server Error, Try logging out and logging back';
         break;
 
+      case "ERROR_CODE_260":
+        title = 'Error!';
+        desc = 'You are trying to move the item to a store that does not exist yet';
+        break;
+
+
       case "NOT FOUND":
         title = 'Code not found';
         desc = 'The item code for this item was not found in the database';

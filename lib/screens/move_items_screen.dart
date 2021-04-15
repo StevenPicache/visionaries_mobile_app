@@ -437,6 +437,10 @@ class _MoveItemsState extends State<MoveItems> {
       FeedbackUtils.showFeedbackAlert(context, "ERROR_CODE_258").show();
     }
 
+    else if (response.statusCode == 260) {
+      response = json.decode(response.body);
+      FeedbackUtils.showFeedbackAlert(context, "ERROR_CODE_260").show();
+    }
 
     else if (response.statusCode == 500) {
       response = json.decode(response.body);
