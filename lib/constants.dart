@@ -11,7 +11,7 @@ const double kScreenWidth = 400;
 
 // API URL IP_ADDRESS
 //const String EMULATOR_API_URL_ANDROID = 'http://10.0.2.2:5000';
-const String EMULATOR_API_URL_ANDROID = 'http://192.168.0.17:5000';
+const String API_URL_AND_PORT_NUMBER = 'http://192.168.0.17:5000';
 
 const String EMULATOR_API_URL_IOS = 'http://127.0.0.1:5000';
 //const String MY_COMPUTER_API_URL_IOS = 'http://192.168.0.23:5000';

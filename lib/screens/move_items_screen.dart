@@ -12,11 +12,15 @@ import 'package:visionariesmobileapp/utils/user_feedback_utils.dart';
 
 import 'package:http/http.dart' as http;
 
+/*
+*   NAME    :   MoveItems
+*   PURPOSE :   loads the UI for the moving of the items with the methods to make it work
+*
+* */
 
 class MoveItems extends StatefulWidget {
 
   static final String routeName = '/move';
-
 
   @override
   _MoveItemsState createState() => _MoveItemsState();
@@ -277,10 +281,8 @@ class _MoveItemsState extends State<MoveItems> {
 
   Future scan() async {
     try {
-      //String str_barcode = await BarcodeScanner.scan();
 
       String str_barcode = await BarcodeScanner.scan();
-      
       this.barcode = str_barcode;
       setState(() {
         upcController.text = str_barcode;
@@ -305,6 +307,20 @@ class _MoveItemsState extends State<MoveItems> {
   }
 
 
+
+  /*
+  *   FUNCTION    : Move_Item_Warehouse_To_Truck
+  *
+  *   DESCRIPTION : Will move the item from warehouse to truck
+                    Checks the parameter and send the proper error message to the user
+                    If the parameters are valid, then a function call to Move_this_item
+                    will be executed
+  *
+  *   PARAMETERS  : none
+  *
+  *   RETURNS     : NONE
+  */
+
   ElevatedButton Move_Item_Warehouse_To_Truck() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -312,8 +328,6 @@ class _MoveItemsState extends State<MoveItems> {
       ),
 
       onPressed: () {
-        // barcode = "ABC123";
-
         if (barcode == "" && quantity.text == "") {
           FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BOTH_TO_WAREHOUSE").show();
         }
@@ -339,13 +353,23 @@ class _MoveItemsState extends State<MoveItems> {
     );
   }
 
+
+  /*
+  *   FUNCTION    : Move_Item_Truck_To_Warehouse
+  *
+  *   DESCRIPTION : Will move the item from warehouse to truck
+                    Checks the parameter and send the proper error message to the user
+                    If the parameters are valid, then a function call to Move_this_item
+                    will be executed
+  *
+  *   PARAMETERS  : none
+  *
+  *   RETURNS     : NONE
+  */
+
   ElevatedButton Move_Item_Truck_To_Warehouse() {
     return ElevatedButton(
-      // color: Theme.of(context).primaryColor,
-      // splashColor: Theme.of(context).accentColor,
       style: ElevatedButton.styleFrom(primary: Colors.black),
-
-
       onPressed: () {
         if (barcode == "" && quantity.text == "") {
           FeedbackUtils.showFeedbackAlert(context, "ERROR_INVALID_BOTH_TO_WAREHOUSE").show();
@@ -362,9 +386,8 @@ class _MoveItemsState extends State<MoveItems> {
         else {
           Move_This_Item(barcode, qty, "truckToWarehouse");
         }
-
-
       },
+
       child: Text(
         "To Shop",
         style: TextStyle(
@@ -375,13 +398,27 @@ class _MoveItemsState extends State<MoveItems> {
   }
 
 
+  /*
+  *   FUNCTION    : Move_This_Item
+  *
+  *   DESCRIPTION : Functions that will have prepare the query to the API with
+                    the input parameters and run it in the backgroup using async
+                    and await
+  *
+  *   PARAMETERS  : param1_upc          -   upc code 
+                    param2_quantity     -   item quantity
+                    param4_identifier   -   action identifier
+  *
+  *   RETURNS     : NONE
+  */
+
   Move_This_Item(param1_upc, param2_quantity, param4_identifier) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String userID = sharedPreferences.getString(USER_ID_KEY);
     String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
 
     try {
-      String url = EMULATOR_API_URL_ANDROID
+      String url = API_URL_AND_PORT_NUMBER
           +"${API_SERVICES_URL_INVENTORY}/"
               "$param1_upc/"
               "$param2_quantity/"
@@ -394,28 +431,29 @@ class _MoveItemsState extends State<MoveItems> {
         headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
       );
       print(response.statusCode);
-      move(response);
+      queryResponseCode(response);
     }
 
     catch (e) {
-      String urlIOS = EMULATOR_API_URL_IOS
-         +"${API_SERVICES_URL_INVENTORY}/"
-          "$param1_upc/"
-          "$param2_quantity/"
-          "$userID/"
-          "$param4_identifier";
-
-      final response = await http.get(
-        Uri.parse(urlIOS),
-        headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-      );
-
-      print(response.statusCode);
-      move(response);
+      print(e);
     }
   }
 
-  move(response) {
+
+  /*
+  *   FUNCTION    : Move_This_Item
+  *
+  *   DESCRIPTION : Functions that will have prepare the query to the API with
+                    the input parameters and run it in the backgroup using async
+                    and await
+  *
+  *   PARAMETERS  : param1_upc          -   upc code 
+                    param2_quantity     -   item quantity
+                    param4_identifier   -   action identifier
+  *
+  *   RETURNS     : NONE
+  */
+  queryResponseCode(response) {
     if (response.statusCode == 200) {
       response = json.decode(response.body);
       FeedbackUtils.showFeedbackAlert(context, "ITEM_MOVE_SUCCESS").show();

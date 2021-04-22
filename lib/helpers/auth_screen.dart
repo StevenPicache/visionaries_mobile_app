@@ -150,8 +150,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       'username': username,
       'password': password
     };
-   
-
 
     try{
       // CREATE THIS VARIABLE ON THE CLASS SO IT CAN BE CHANGE EASILY
@@ -159,7 +157,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
       try{
         print("AUTH");
-        String myApiUrl = EMULATOR_API_URL_ANDROID;
+        String myApiUrl = API_URL_AND_PORT_NUMBER;
         response = await http.post(myApiUrl + API_SERVICES_URL_AUTH ,
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
@@ -170,16 +168,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       }
 
       catch (e){
-        String iosURL = EMULATOR_API_URL_IOS;
-        response = await http.post(iosURL + API_SERVICES_URL_AUTH ,
-        headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        }, body: jsonEncode(data));
-
-        print(response.statusCode);
-        AuthenticaticateUser(response);
+        print(e);
       }
-
     }
 
     catch(e){

@@ -27,7 +27,6 @@ class DetailsScreen extends StatelessWidget {
         ),
 
         decoration: BoxDecoration(
-//          color: Colors.grey
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -39,9 +38,6 @@ class DetailsScreen extends StatelessWidget {
                 Colors.grey,
                 Colors.grey,
 
-//                Theme
-//                    .of(context)
-//                    .primaryColor
               ]),
         ),
 
@@ -152,11 +148,6 @@ class DetailsScreen extends StatelessWidget {
                 height: kSmallMargin,
               ),
 
-
-
-
-
-
               // SITE CONTACT
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
@@ -253,7 +244,7 @@ class DetailsScreen extends StatelessWidget {
                 height: kSmallMargin,
               ),
 
-
+              // Site addresses
               Container(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
@@ -298,7 +289,7 @@ class DetailsScreen extends StatelessWidget {
               ),
 
 
-
+              // Schedule date
               Container(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
@@ -323,9 +314,9 @@ class DetailsScreen extends StatelessWidget {
 
                       Expanded(
                         child: Text(
-
+                          // class the format schedule date function
+                          // to fix the format of date scheduled
                           Format_Schedule_Date(serviceDetails.date_scheduled),
-                          //serviceDetails.date_scheduled.toString().removeAt(0),
 
                           style: TextStyle(
                             fontSize: 20.0,
@@ -346,6 +337,7 @@ class DetailsScreen extends StatelessWidget {
                 height: kSmallMargin,
               ),
 
+              
               Container(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kLargeMargin),
@@ -415,27 +407,25 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 
-  String Format_Schedule_Date(myDate){
 
+
+
+  /*
+  * FUNCTION : Format_Schedule_Date
+  *
+  * DESCRIPTION : formats the schedule date and remove the 2 " on the beginning and end
+  *             and make it more presentable
+  *
+  * PARAMETERS : myData - string that stores the schedule data with "" in front and end.
+  *
+  * RETURNS : NONE
+  */
+
+
+  String Format_Schedule_Date(myDate){
     int strLength = myDate.length;
     String myStr = myDate.substring(1,strLength - 1);
     print(myStr);
-
     return myStr;
-  }
-
-
-
-  String get_finish_time(){
-
-    var now = DateTime.now();
-    String retVal = now.year.toString() +'-'
-                  + now.month.toString() + '-'
-                  + now.day.toString() +' '
-                  + now.hour.toString() + ':'
-                  + now.minute.toString() + ':'
-                  + now.second.toString().padLeft(2,'0');
-
-    return retVal;
   }
 }

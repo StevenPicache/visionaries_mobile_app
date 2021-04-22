@@ -1,17 +1,25 @@
+
+
+/*
+*   FILE        : visionaries_mobile_app
+*   PROGRAMMER  : Steven Picache and Daniel Hergott
+*   VERSION     : 1.00
+*   DESCRIPTION : first version of the app.
+*                 Features :
+*                   - Services page with inventory management,
+*                   - Shop inventory search
+*                   - GPS Navigation system
+*                   - Barcode scanner for item tracking
+*  */
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visionariesmobileapp/constants.dart';
-import 'package:visionariesmobileapp/helpers/bar_code_scanner.dart';
 import 'package:visionariesmobileapp/screens/check_inventory_screen.dart';
 import 'package:visionariesmobileapp/screens/find_site_location.dart';
 import 'package:visionariesmobileapp/screens/login_screen.dart';
 import 'package:visionariesmobileapp/screens/move_items_screen.dart';
 import 'package:visionariesmobileapp/screens/today_service.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:flutter/services.dart';
-import 'package:visionariesmobileapp/utils/user_feedback_utils.dart';
-
-
 
 
 class HomeScreen extends StatefulWidget {
@@ -23,7 +31,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  String barcode = "";
+  // Initstate, check if the user has logged in, before and a token has is already saved
+  // brings the user back to login page if user credentials is not found
 
   @override
   void initState() {
@@ -34,6 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    /*
+    * The code below will create the user interface for the home screen
+    * and shows the user the options that they want to choose.
+    * */
+
     return Container(
       child: Container(
         height: MediaQuery.of(context).size.height,
@@ -101,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         Text(
-                          'Work Orders',
+                          'Services',
                           style: TextStyle(color: Colors.black87 , fontSize: 15),
                         ),
                       ],
@@ -201,7 +216,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-
               ],
             ),
 
@@ -308,13 +322,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+  /*
+  *  Clear the user credentials on the shared preferences
+  *  when the user clicks the logout button
+  * */
+
   logout() async {
      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
      sharedPreferences.clear();
   }
 
+  /*
+  * Checks if the user is logged in or not
+  * */
   isLoggedIn() async {
-    
     try {
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       print(sharedPreferences.getString(USER_ID_KEY));

@@ -12,6 +12,15 @@ import 'package:visionariesmobileapp/screens/home_screen.dart';
 import 'package:visionariesmobileapp/utils/user_feedback_utils.dart';
 
 
+
+/*
+*   NAME    :   FinishJob
+*   PURPOSE :   This class will load the UI for the Finish Job page on where the logiC for finishing
+*               the service and sending the report of items used back to the API will be handled
+*
+* */
+
+
 class FinishJob extends StatefulWidget {
   static final String routeName = '/finish';
 
@@ -199,6 +208,7 @@ class _FinishJobState extends State<FinishJob> {
                 width: MediaQuery.of(context).size.width * .70,
 
                 // --------------------------------------------
+                // gives the swiping feature to remove the item
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     return Dismissible(
@@ -247,19 +257,26 @@ class _FinishJobState extends State<FinishJob> {
   }
 
 
+  /*
+  * FUNCTION    : getItems
+  *
+  * DESCRIPTION : requests the API for the items that is assigned with this Job_id and is currently on stocked
+  *               and available for used.
+  *
+  * PARAMETERS  : NONE
+  *
+  * RETURNS     : NONE
+  */
 
   getItems() async {
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String userID = sharedPreferences.getString(USER_ID_KEY);
     String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
-    String param1 = widget.finishService.work_id;
+    String work_id = widget.finishService.work_id;
 
     try {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      print(sharedPreferences.get('userid'));
-
-      String urlAndroid = ""+EMULATOR_API_URL_ANDROID+"/jobsites/$param1";
+      String urlAndroid = ""+API_URL_AND_PORT_NUMBER+"/jobsites/$work_id";
 
       print(urlAndroid);
       
@@ -272,7 +289,7 @@ class _FinishJobState extends State<FinishJob> {
       parseData(response);
 
     } catch (e) {
-      String urlIOS = ""+EMULATOR_API_URL_IOS+"/jobsites/$param1";
+      String urlIOS = ""+EMULATOR_API_URL_IOS+"/jobsites/$work_id";
       final response = await http.get(
         Uri.parse(urlIOS),
         headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
@@ -282,6 +299,18 @@ class _FinishJobState extends State<FinishJob> {
       parseData(response);
     }
   }
+
+
+
+  /*
+  * FUNCTION    : parseData
+  *
+  * DESCRIPTION :  decodes the JSON return data from the API and parse it
+  *
+  * PARAMETERS  : NONE
+  *
+  * RETURNS     : NONE
+  */
 
   parseData(var response) {
     if (response.statusCode == 200) {
@@ -315,6 +344,19 @@ class _FinishJobState extends State<FinishJob> {
     }
   }
 
+
+  /*
+  * FUNCTION    : removeItem
+  *
+  * DESCRIPTION :  saving the ID of the item used and building a string that are filled with
+  *                the item id of the items that are used.
+  *
+  * PARAMETERS  : int index   -   the index of the item on the dismissble listview. So we can refresh the page
+  *                               and removed the item that was already used.
+  *
+  * RETURNS     : NONE
+  */
+
   void removeItem(int index) {
     setState(() {
       itemsUsedList.add(myEquipments[index].job_equipment_id);
@@ -324,17 +366,29 @@ class _FinishJobState extends State<FinishJob> {
   }
 
 
+
+  /*
+  * FUNCTION    : finish_task
+  *
+  * DESCRIPTION :  decodes the JSON return data from the API and parse it
+  *
+  * PARAMETERS  : String workID   -  stores the workID for this service.
+  *               String itemIds  -  stores the itemId for the items that are
+  *
+  * RETURNS     : NONE
+  */
+
   void finish_task(String workID, String itemIds) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String userID = sharedPreferences.getString(USER_ID_KEY);
     String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
-  
-    
+
+    // this statement is when the user has item used to report back
     if(workID != null && itemIds.length != 0) {
       String itemsString = itemIds.substring(0,itemIds.length - 1);
 
       try {
-        String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
+        String urlAndroid = ""+API_URL_AND_PORT_NUMBER+""
           ""+API_SERVICES_URL_TASK_FINISHED+
           "/$userID/$workID/$itemsString";
 
@@ -345,50 +399,44 @@ class _FinishJobState extends State<FinishJob> {
           Sending_Feedback_Alert(response);
         }
 
+      // This is optional. This can be remove if the API is already hosted of a computer or hosted on the web
       catch (e) {
-        String urlIOS = ""+EMULATOR_API_URL_IOS+""
-          ""+API_SERVICES_URL_TASK_FINISHED+
-          "/$userID/$workID/$itemsString";
+        print(e);
+      }
+    }
 
-          final response = await http.get(
-            Uri.parse(urlIOS),
-              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-            );
-            print(response.statusCode);
-            Sending_Feedback_Alert(response);
-          }
-        }
 
-        else{
-           try {
-            String urlAndroid = ""+EMULATOR_API_URL_ANDROID+""
-                ""+API_SERVICES_URL_WORKORDERS_WITHOUT_ITEMS+
-                "/$userID/$workID";
+    else{
+      try {
+        String urlAndroid = ""+API_URL_AND_PORT_NUMBER+""
+            ""+API_SERVICES_URL_WORKORDERS_WITHOUT_ITEMS+
+            "/$userID/$workID";
             
-            print(urlAndroid);
-            print(" ");
-            final response = await http.get(
-              Uri.parse(urlAndroid),
-              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-            );
-            Sending_Feedback_Alert(response);
-          }
+        print(urlAndroid);
 
-          catch (e) {
-            String urlIOS = ""+EMULATOR_API_URL_IOS+""
-              ""+API_SERVICES_URL_WORKORDERS_WITHOUT_ITEMS+
-              "/$userID/$workID";
-
-            final response = await http.get(
-            Uri.parse(urlIOS),
-            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
+        final response = await http.get(
+          Uri.parse(urlAndroid),
+          headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
         );
-
-        print(response.statusCode);
         Sending_Feedback_Alert(response);
+      }
+
+      catch (e) {
+        print(e);
       }
     }
   }
+
+
+  /*
+  * FUNCTION    : Sending_Feedback_Alert
+  *
+  * DESCRIPTION :  gives user feedback if the report was sent successfully or not
+  *
+  * PARAMETERS  : response - stores the response code from the API
+  *
+  * RETURNS     : NONE
+  */
 
   Sending_Feedback_Alert(response){
     if(response.statusCode == 200){

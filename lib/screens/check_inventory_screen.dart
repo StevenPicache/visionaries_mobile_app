@@ -8,6 +8,12 @@ import 'package:visionariesmobileapp/components/items_card.dart';
 import 'package:http/http.dart' as http;
 import 'package:visionariesmobileapp/utils/user_feedback_utils.dart';
 
+/*
+*   NAME    :   CheckInventory
+*   PURPOSE :   This class will load the UI for the shop inventory page
+*
+* */
+
 
 class CheckInventory extends StatefulWidget {
 
@@ -111,7 +117,6 @@ class _CheckInventoryState extends State<CheckInventory> {
 
                   onPressed: () {
                     Determine_What_Action(itemToSearch);
-                    print("Helloo Raised button");
                   },
                   child: Text(
                       "Search",
@@ -151,7 +156,16 @@ class _CheckInventoryState extends State<CheckInventory> {
   }
 
 
-  getInventoryDetails(response){
+  /*
+  * FUNCTION    : parseInventoryDetails
+  *
+  * DESCRIPTION :  parse the JSON return from the API and properly store the data from the URL to the item class
+  *
+  * PARAMETERS  : response    - stores the returned JSON data from the API
+  *
+  * RETURNS     : NONE
+  */
+  parseInventoryDetails(response){
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
       List<Items> tempInventoryItems = [];
@@ -178,9 +192,18 @@ class _CheckInventoryState extends State<CheckInventory> {
     else {
       print(response.statusCode);
     }
-
-
   }
+
+
+  /*
+  * FUNCTION    : Determine_What_Action
+  *
+  * DESCRIPTION : requests the API for the items that are in the shop
+  *
+  * PARAMETERS  : String itemName - stores the input in the input textfield and use that as a parameter for them item search
+  *
+  * RETURNS     : NONE
+  */
 
   Determine_What_Action(String itemName) async {
 
@@ -192,36 +215,25 @@ class _CheckInventoryState extends State<CheckInventory> {
       if(itemName == ""){
 
         try{
-          String urlDevice = ""+EMULATOR_API_URL_ANDROID+""
+          String urlDevice = ""+API_URL_AND_PORT_NUMBER+""
               ""+API_SERVICES_URL_INVENTORY+"";
 
           final response = await http.get(
             Uri.parse(urlDevice),
             headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
           );
-
           print(response.statusCode);
-          getInventoryDetails(response);
-
+          parseInventoryDetails(response);
         }
 
         catch(e){
-          String urlIOS = ""+EMULATOR_API_URL_IOS+""
-            ""+API_SERVICES_URL_INVENTORY+"";
-
-          final response = await http.get(
-            Uri.parse(urlIOS),
-            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-          );
-
-          print(response.statusCode);
-          getInventoryDetails(response);
+          print(e);
         }
       }
 
       else{
          try{
-           String url = ""+EMULATOR_API_URL_ANDROID+""
+           String url = ""+API_URL_AND_PORT_NUMBER+""
                ""+API_SERVICES_URL_ITEM_SEARCH+
                "/$itemName";
 
@@ -230,25 +242,14 @@ class _CheckInventoryState extends State<CheckInventory> {
              headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
            );
 
-           getInventoryDetails(response);
+           parseInventoryDetails(response);
            itemToSearch="";
            itemController.clear();
 
         }
 
         catch(e){
-          String urlIOS = ""+EMULATOR_API_URL_IOS+""
-              ""+API_SERVICES_URL_ITEM_SEARCH+
-              "/$itemName";
-
-          final response = await http.get(
-            Uri.parse(urlIOS),
-            headers: {HttpHeaders.authorizationHeader: "JWT $authKey"},
-          );
-
-          getInventoryDetails(response);
-          itemToSearch="";
-          itemController.clear();
+          print(e);
         }
       }
     } catch (e) {

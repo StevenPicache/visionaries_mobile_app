@@ -11,7 +11,6 @@ class Services{
   String site_technician_contact_number;
   String date_requested;
   String job_id;
-  // String date_time;
 
 
   String order_creator;

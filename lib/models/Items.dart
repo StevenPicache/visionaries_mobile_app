@@ -1,7 +1,11 @@
 
 
 
-
+/*
+*   NAME    :   Items
+*   PURPOSE :   Use to store the data about the items.
+*
+* */
 
 class Items{
 

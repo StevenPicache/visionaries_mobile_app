@@ -1,4 +1,10 @@
 
+/*
+*   NAME    :   SiteLocation
+*   PURPOSE :   Use to store the data about the SiteLocation.
+*
+* */
+
 
 class SiteLocation {
 

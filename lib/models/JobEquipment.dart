@@ -1,6 +1,11 @@
 
 
 
+/*
+*   NAME    :   JobEquipment
+*   PURPOSE :   Use to store the data about the JobEquipments.
+*
+* */
 
 class JobEquipment{
 

@@ -1,16 +1,20 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visionariesmobileapp/components/services_card.dart';
 import 'package:visionariesmobileapp/constants.dart';
 import 'package:visionariesmobileapp/models/services.dart';
-
-
 import 'package:http/http.dart' as http;
+
+
+
+/*
+*   NAME    :   TodayServices
+*   PURPOSE :   This class will create the UI for the services page. It will make a
+*               request to the API and will process the return data and fill the listview
+*
+* */
 
 
 class TodayServices extends StatefulWidget {
@@ -27,7 +31,7 @@ class _TodayServicesState extends State<TodayServices> {
   @override
   void initState() {
     // Will execute the downloadInfo method
-    getCategories();
+    getServices();
   }
 
   @override
@@ -35,7 +39,7 @@ class _TodayServicesState extends State<TodayServices> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        "Today Services",
+        "Services",
         style: TextStyle(fontSize: 25, color: Colors.black87),
       )),
 
@@ -63,12 +67,14 @@ class _TodayServicesState extends State<TodayServices> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
-                      child: Text(
-                        "Services for today",
-                        style: TextStyle(
-                            fontSize: 30.0,
-                            color: Theme.of(context).primaryColor),
-                        textAlign: TextAlign.left,
+                      child: Center(
+                        child: Text(
+                          "Your Tasks",
+                          style: TextStyle(
+                              fontSize: 30.0,
+                              color: Theme.of(context).primaryColor),
+                          textAlign: TextAlign.left,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -120,13 +126,23 @@ class _TodayServicesState extends State<TodayServices> {
   }
 
 
-  getCategories() async {
+  /*
+  * FUNCTION    : getServices
+  *
+  * DESCRIPTION : requests the API for work services for the user.
+  *
+  * PARAMETERS  : None
+  *
+  * RETURNS     : NONE
+  */
+
+  getServices() async {
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       String userID = sharedPreferences.getString(USER_ID_KEY);
       String authKey = sharedPreferences.getString(USER_TOKEN_KEY);
 
       try {
-        String url = ""+EMULATOR_API_URL_ANDROID+""
+        String url = ""+API_URL_AND_PORT_NUMBER+""
             ""+API_SERVICES_URL_WORKORDERS+"/"
             ""+userID+"";
         final response = await http.get(
@@ -135,7 +151,7 @@ class _TodayServicesState extends State<TodayServices> {
         );
 
         print(response.statusCode);
-        parseData(response);
+        parseServicesData(response);
 
       } catch (e) {
         String urlIOS = ""+EMULATOR_API_URL_IOS+""
@@ -148,11 +164,22 @@ class _TodayServicesState extends State<TodayServices> {
         );
 
         print(response.statusCode);
-        parseData(response);
+        parseServicesData(response);
       }
     }
 
-  parseData(var response){
+
+
+  /*
+  * FUNCTION    : parseServicesData
+  *
+  * DESCRIPTION : decodes the JSON return data from the API and parse it
+  *
+  * PARAMETERS  : None
+  *
+  * RETURNS     : NONE
+  */
+  parseServicesData(var response){
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
       List<Services> tempServices = [];
@@ -161,7 +188,6 @@ class _TodayServicesState extends State<TodayServices> {
       int dataLength = map['workOrders'].length;
 
       while (i < dataLength) {
-
         try{
           tempServices.add(Services(
             work_name: map['workOrders'][i]['Title'] ??
@@ -183,7 +209,7 @@ class _TodayServicesState extends State<TodayServices> {
             job_id: map['workOrders'][i]['Job_ID'].toString() ??
                 'No data was received from server',
             work_id: map['workOrders'][i]['Work_ID'].toString() ??
-                'No data was received from server',));  
+                'No data was received from server',));
           i += 1;
         }
 
