@@ -17,7 +17,7 @@ Key Features:
   - G.P.S Navigation System
       - displays the items name, item manufacturer, and quantity of the item on the Shop or Warehouse
   - Barcode scanner for Item Tracking
-      - uses a barcode scanner to scan the item for UPC/EAN code and move it out or in the Shop.
+      - uses a barcode scanner to scan the item for UPC/EAN code and move it in or out of the Shop.
 
 
 
