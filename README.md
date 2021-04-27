@@ -11,10 +11,10 @@ The Visualize Mobile App
 Key Features:
   - Work Order Management 
       - where all the work orders for the technician will be shown,
-  - Shop inventory tracking
+  - G.P.S Navigation System
       - locate and computes the distance of the desired site location from the user's current location and also showing
         the route from the user's current place to the destination places
-  - G.P.S Navigation System
+  - Shop inventory tracking 
       - displays the items name, item manufacturer, and quantity of the item on the Shop or Warehouse
   - Barcode scanner for Item Tracking
       - uses a barcode scanner to scan the item for UPC/EAN code and move it in or out of the Shop.
