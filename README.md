@@ -1,8 +1,8 @@
 
 The Visualize Mobile App
 
-    -   Visualize is a mobile app that is created to handle a work orders from the Visualize Desktop App. The app was created
-    to handle work orders from the Visualize Desktop App and also executing the tasks are 
+  - Visualize is a mobile app that is created to handle a work orders from the Visualize Desktop App. The app request data
+  from an Visualize API that is querying the Visualize database for the data that the application needs 
 
 
 
