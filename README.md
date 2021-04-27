@@ -23,7 +23,7 @@ Key Features:
 
 Screens 
 
-![image](https://user-images.githubusercontent.com/56164184/116313746-285e8b00-a77c-11eb-8112-4d1e04d552c0.png) ![image](https://user-images.githubusercontent.com/56164184/116313786-36141080-a77c-11eb-9eaf-1974d3bfc315.png) ![image](https://user-images.githubusercontent.com/56164184/116313696-10870700-a77c-11eb-95a7-bce60979b330.png) ![image](https://user-images.githubusercontent.com/56164184/116313833-4af0a400-a77c-11eb-8713-f4222a566da7.png) ![image](https://user-images.githubusercontent.com/56164184/116313895-6196fb00-a77c-11eb-9410-396dd1ff5ffb.png)
+![image](https://user-images.githubusercontent.com/56164184/116313746-285e8b00-a77c-11eb-8112-4d1e04d552c0.png) ![image](https://user-images.githubusercontent.com/56164184/116315678-da975200-a77e-11eb-8aea-2ef918f09e63.png) ![image](https://user-images.githubusercontent.com/56164184/116313786-36141080-a77c-11eb-9eaf-1974d3bfc315.png) ![image](https://user-images.githubusercontent.com/56164184/116313696-10870700-a77c-11eb-95a7-bce60979b330.png) ![image](https://user-images.githubusercontent.com/56164184/116313833-4af0a400-a77c-11eb-8713-f4222a566da7.png) ![image](https://user-images.githubusercontent.com/56164184/116313895-6196fb00-a77c-11eb-9410-396dd1ff5ffb.png)
 
 
 
