@@ -257,7 +257,7 @@ class _FindSiteLocationState extends State<FindSiteLocation> {
   _drawRouteLines(LocationData currentUserLocation, Address addressOfDestination) async {
     polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "AIzaSyDHE8W8R0E0da0alpKBKXSdKszn601OB7Y", // Google Maps API Key
+      "API_KEY", // Google Maps API Key
       PointLatLng(currentUserLocation.latitude, currentUserLocation.longitude),
       PointLatLng(addressOfDestination.coordinates.latitude, addressOfDestination.coordinates.longitude),
       travelMode: TravelMode.transit,
